@@ -1,6 +1,5 @@
 var ss = require('socketstream'),
     express = require('express'),
-    chip = require('chipmunk'),
      server = express();
 
 var app = express();
