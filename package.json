@@ -1,5 +1,5 @@
 {
-  "name": "like",
+  "name": "gameOn",
   "description": "An awesome real time application",
   "version": "0.0.1",
   "author": "Me <me@mydomain.com>",
@@ -10,6 +10,6 @@
     "ss-stylus": "0.1.x",
     "ss-hogan": "0.1.x",
     "three": "0.55.x",
-    "chipmunk": "0.1.1"
+    "chipmunk": "0.1.x"
   }
 }
