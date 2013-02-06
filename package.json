@@ -9,7 +9,6 @@
     "socketstream": "0.3.x",
     "ss-stylus": "0.1.x",
     "ss-hogan": "0.1.x",
-    "three": "0.55.x",
-    "chipmunk": "0.1.x"
+    "chipmunk": "*"
   }
 }
