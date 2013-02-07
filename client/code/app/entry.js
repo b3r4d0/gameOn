@@ -2,7 +2,8 @@
 
 // Make 'ss' available to all modules and the browser console
 window.ss = require('socketstream');
-window.cp = require('chipmunk');
+// You won't need to require the file like this
+//window.cp = require('chipmunk');
 
 ss.server.on('disconnect', function(){
   console.log('Connection down :-(');
