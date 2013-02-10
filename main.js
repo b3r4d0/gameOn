@@ -12,11 +12,9 @@ ss.client.templateEngine.use(require('ss-hogan'));
 ss.client.define('main', {
   view: 'app.html',
   css:  ['libs/reset.css', 'app.styl'],
-  code: ['libs/jquery.min.js', 'libs/chipmunk/cp.min.js', 'app' ],
+  code: ['libs/jquery.min.js', 'libs/chipmunk/cp.min.js', 'libs/easeljs-0.5.0.min.js', 'app' ],
   tmpl: '*'
 });
-
-server.use('/test', express.static(__dirname + '/test') );
 
 // Use Express to route requests
 app.get('/', function(req, res){

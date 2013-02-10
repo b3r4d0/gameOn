@@ -19,6 +19,7 @@ ss.server.on('ready', function(){
   jQuery(function(){
     
     // Load app
+    
     var app = require('/app');
  	app.awake();
 

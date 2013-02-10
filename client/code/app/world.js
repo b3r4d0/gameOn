@@ -10,7 +10,7 @@ var scale			    = 1;
 var canvas 			 = null;
 var ctx 			   = null;
 
-var physics 			= null;
+var physics 		= null;
 var space 			= null;
 
 var mouse 			= null;
@@ -28,25 +28,28 @@ var endLine			= 0;
 
 var debug       = true;
 
-
 //new 
 var stage       = null;
 
 var kitty;
+var kittyShape;
+var kittySprite;
 var kittyPhysics;
-var kittyHeight = 40;
-var kittyWidth  = 40;
+var kittyHeight = 50;
+var kittyWidth  = 50;
+var kittyToon;
 
-exports.awake = function( physics ) {
-	trace("awake again");
-	physics 		  = physics;
-	canvas 	     	= document.getElementsByTagName('canvas')[0];
-	physicsWidth 	= canvas.width 	= window.innerWidth;   	//full screen
-  physicsHeight = canvas.height = window.innerHeight; 	//full screen
+var avatar;
+
+exports.awake = function( ) {
+	physics 		  = document.getElementById('physics');
+	
+	physicsWidth 	= physics.width 	= window.innerWidth;   	//full screen
+  physicsHeight = physics.height = window.innerHeight; 	//full screen
 	
 	//physicsWidth 	= canvas.width;   	
   	//physicsHeight = canvas.height; 	
-	ctx 		= canvas.getContext('2d');
+	ctx 		= physics.getContext('2d');
 
 	height = physicsHeight;
 	width = physicsWidth;
@@ -63,7 +66,7 @@ exports.awake = function( physics ) {
 
   	//physics.onresize();
   trace("awaking the world");
-  physics.setInterval( step , 10 );
+  window.setInterval( step , 10 );
 
   drawBorders();
   run();
@@ -76,17 +79,58 @@ exports.awake = function( physics ) {
   stageCanvas.height = window.innerHeight;   //full screen
   
   trace( "new height " + stageCanvas.width );
-
  
   stage = new createjs.Stage( stageCanvas );
   stage.name = "Feed Me";
-   trace("is there a stage canvas " + stage );
 
-  kitty  = new createjs.Shape();
-  kitty.graphics.beginFill('rgba(255,0,0,1)').drawRoundRect(0,0, kittyWidth, kittyHeight, 10);
-  stage.addChild( kitty );
-  stage.update();
+  createjs.Ticker.setFPS( 8);
+  createjs.Ticker.addListener(stage);
+
+  avatar = require( "/avatar.js" );
+  avatar.awake( stage, physicsWidth, physicsHeight, space );
+
+  //kitty = new createjs.Container();
+
+  //kittyShape = new createjs.Shape();
+  //kittyShape.graphics.beginFill('rgba(255,0,0,1)').drawRoundRect(0,0, kittyWidth, kittyHeight, 10);
+  
+  //kittySprite = new createjs.SpriteSheet({images: ["images/kitty.png"], "animations": {"sit": [0, 0 ], "up": [2, 3]}, frames: [[0,0,219,160,0,20.35,2.85],[219,0,219,160,0,20.35,2.85],[438,0,219,160,0,20.35,2.85],[657,0,219,160,0,20.35,2.85],[0,160,219,160,0,20.35,2.85],[219,160,219,160,0,20.35,2.85],[438,160,219,160,0,20.35,2.85],[657,160,219,160,0,20.35,2.85],[0,320,219,160,0,20.35,2.85],[219,320,219,160,0,20.35,2.85],[438,320,219,160,0,20.35,2.85],[657,320,219,160,0,20.35,2.85],[0,480,219,160,0,20.35,2.85],[219,480,219,160,0,20.35,2.85],[438,480,219,160,0,20.35,2.85],[657,480,219,160,0,20.35,2.85],[0,640,219,160,0,20.35,2.85],[219,640,219,160,0,20.35,2.85],[438,640,219,160,0,20.35,2.85],[657,640,219,160,0,20.35,2.85],[0,800,219,160,0,20.35,2.85],[219,800,219,160,0,20.35,2.85],[438,800,219,160,0,20.35,2.85],[657,800,219,160,0,20.35,2.85],[0,960,219,160,0,20.35,2.85]]});
+  //kittyToon   = new createjs.BitmapAnimation( kittySprite );
+  //kittyToon.gotoAndPlay("sit");
+
+  //kitty.addChild( kittyShape );
+  //kitty.addChild( kittyToon    );
+  //stage.addChild( kitty        );
+
+  //kittyToon.x -= 60;
+  //kittyToon.y -= 100;
+
+  
+  //trace("avatar " + avatar);
 }
+
+
+var draw = function() {
+
+  avatar.update();
+  stage.update();
+
+  ctx.clearRect(0, 0, physics.width, physics.height);
+  ctx.fillText("Version: " + tag, 0, 0, physicsWidth );
+
+  // Draw shapes
+  ctx.strokeStyle = 'black';
+  ctx.clearRect(0, 0, this.width, this.height);
+
+  ctx.font = "16px sans-serif";
+  ctx.lineCap = 'round';
+
+  space.eachShape(function(shape) {
+    ctx.fillStyle = shape.style();
+    shape.draw(ctx, scale, point2canvas);
+  });
+ 
+};
 
 var step = function(dt) {
   
@@ -141,29 +185,6 @@ var raf = window.requestAnimationFrame
     return window.setTimeout(callback, 1000 / 60);
   };
 
-var draw = function() {
-
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillText("Version: " + tag, 0, 0, physicsWidth );
-
-  // Draw shapes
-  ctx.strokeStyle = 'black';
-  ctx.clearRect(0, 0, this.width, this.height);
-
-  ctx.font = "16px sans-serif";
-  ctx.lineCap = 'round';
-
-  space.eachShape(function(shape) {
-    ctx.fillStyle = shape.style();
-    shape.draw(ctx, scale, point2canvas);
-  });
-
-  kitty.x = kittyPhysics.p.x - kittyWidth /2;
-  
-  kitty.y = point2canvas( kittyPhysics.p ).y - kittyHeight/2;
-  stage.update();
-
-};
 
 var update = function( dt) {
   space.step(dt);
@@ -186,17 +207,17 @@ var drawBorders = function (){
   wall2.setElasticity(1);
   wall2.setFriction(1);
 
-  var floor = space.addShape(new cp.SegmentShape(space.staticBody, v( 0, height / 2), v(width, height /2 ), 0));
+  var floor = space.addShape(new cp.SegmentShape(space.staticBody, v( 0, height / 3), v(width, height /2 ), 0));
   floor.setElasticity(1);
-  floor.setFriction(1);
+  floor.setFriction(5);
 
 }
 
 var addListeners = function() {
 	
 	//physics.onresize		= resize;
-	canvas.onmousedown  = mouseDown;
-  canvas.onmouseup    = mouseUp;
+	window.onmousedown  = mouseDown;
+  window.onmouseup    = mouseUp;
 	window.onkeyup      = keyUp;
 
 	//canvas.onmousemove  = traceMouse;
@@ -206,14 +227,14 @@ var addListeners = function() {
 
 var keyUp	= function( e ) {
 
-	var radius = 20;
-  var mass = 3;
-  var body = space.addBody(new cp.Body(mass, cp.momentForCircle(mass, 0, radius, v(0, 0))));
-  body.setPos(v(200 + 1,  400 ));
-  kittyPhysics = body;
-  var circle = space.addShape(new cp.CircleShape(body, radius, v(0, 0)));
-  circle.setElasticity(0.8);
-  circle.setFriction(1);
+	//var radius = 20;
+  //var mass = 3;
+  //var body = space.addBody(new cp.Body(mass, cp.momentForCircle(mass, 0, radius, v(0, 0))));
+  //body.setPos(v(200 + 1,  400 ));
+  //kittyPhysics = body;
+  //var circle = space.addShape(new cp.CircleShape(body, radius, v(0, 0)));
+  //circle.setElasticity(0.8);
+  //circle.setFriction(1);
     
 }
 
@@ -226,13 +247,16 @@ var mouseUp		= function ( e ) {
 	endLine  = canvas2point( e.clientX, e.clientY);
 	trace( "end line x " + endLine.x + " :::: " + endLine.y );
 
+  if ( endLine.x > startLine.x ) avatar.move( 400  );
+  if ( endLine.x < startLine.x ) avatar.move( -400 );
+
+  return
 	var wall2 = space.addShape(new cp.SegmentShape(space.staticBody, startLine, endLine, 0));
  	wall2.setElasticity(1);
-  	wall2.setFriction(1);
-  	
-  	resized = true;	
+  wall2.setFriction(1);
+  resized = true;	
+  trace("mouseUp");
 
-  	trace("mouseUp");
 }
 
 var resize = function(e) {
