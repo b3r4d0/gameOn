@@ -43,7 +43,7 @@ exports.send = function(text, cb) {
 
 
 //New 
-
+var world = require('/world.js');
 var canvas;
 
 var v = cp.v;
@@ -52,6 +52,8 @@ var ctx;
 
 var GRABABLE_MASK_BIT = 1<<31;
 var NOT_GRABABLE_MASK = ~GRABABLE_MASK_BIT;
+
+var layerGood = "good";
 
 var space;
 var self = this;
@@ -73,19 +75,98 @@ var point2canvas = function(point) {
       return v(point.x *  scale, (480 - point.y) * scale);
   };
 
+  var canvas2point = function(x, y) {
+    return v(x / self.scale, 480 - y / self.scale);
+  };
+
+  // HACK HACK HACK - its awful having this here, and its going to break when we
+  // have multiple demos open at the same time.
+ 
+ var traceMouse = function( e )
+ {
+      mouse = canvas2point(e.clientX, e.clientY);
+ }
+
+ var mouseDown = function (e) {
+    e.preventDefault();
+    var rightclick = e.which === 3; // or e.button === 2;
+    mouse = canvas2point(e.clientX, e.clientY);
+
+    if(!rightclick && !self.mouseJoint) {
+      var point = canvas2point(e.clientX, e.clientY);
+    
+      var shape = space.pointQueryFirst(point, GRABABLE_MASK_BIT, cp.NO_GROUP);
+      if(shape){
+        var body = shape.body;
+        var mouseJoint = self.mouseJoint = new cp.PivotJoint(mouseBody, body, v(0,0), body.world2Local(point));
+
+        mouseJoint.maxForce = 50000;
+        mouseJoint.errorBias = Math.pow(1 - 0.15, 60);
+        space.addConstraint(mouseJoint);
+      }
+    }
+
+    if(rightclick) {
+      self.rightClick = true;
+    }
+  };
+
+  var mouseUp = function(e) {
+    
+    trace("mouse up");
+    var rightclick = e.which === 3; // or e.button === 2;
+    mouse = canvas2point(e.clientX, e.clientY);
+
+    if(!rightclick) {
+      if(self.mouseJoint) {
+        space.removeConstraint(self.mouseJoint);
+        self.mouseJoint = null;
+      }
+    }
+
+    if(rightclick) {
+      self.rightClick = false;
+    }
+  };
 
 exports.awake = function (){
-  canvas = document.getElementsByTagName('canvas')[0];
-  ctx =  canvas.getContext('2d');
+  world.awake( window );
+
+  //canvas = document.getElementsByTagName('canvas')[0];
+  //ctx =  canvas.getContext('2d');
   
-  space = new cp.Space();
+  //canvas.onmousemove  = traceMouse;
+  //canvas.onmousedown  = mouseDown;
+  //canvas.onmouseup    = mouseUp;
+  //canvas.onmousemove  = mouseMove;
 
-  balls();
-  run();
+  //window.onkeyup      = keyUp;
 
-  window.onresize();
-  window.setInterval( step , 10 );
+  //space = new cp.Space();
+
+  //trace("why arent you working");
+
+  //balls();
+  //run();
+
+  //window.onresize();
+  //window.setInterval( step , 10 );
 };
+
+var mouseMove = function( e )
+{
+  //trace( e );
+}
+
+var keyUp = function(e)
+{
+  trace( e );
+}
+
+var space = function()
+{
+
+}
 
 var raf = window.requestAnimationFrame
   || window.webkitRequestAnimationFrame
@@ -184,17 +265,17 @@ window.onresize = function(e) {
   //width = canvas.width = window.innerWidth;   //full screen
   //height = canvas.height = window.innerHeight; //full screen
 
-  width = canvas.width ;
-  height = canvas.height ;
+  //width = canvas.width ;
+  //height = canvas.height ;
 
-  if (width/height > 640/480) {
-    scale = height / 480;
-  } else {
-    scale = width / 640;
-  }
+  //if (width/height > 640/480) {
+  //  scale = height / 480;
+  //} else {
+  //  scale = width / 640;
+  //}
 
-  trace("scale ::: " + scale );
-  resized = true;
+  //trace("scale ::: " + scale );
+  //resized = true;
 };
 
 
@@ -447,8 +528,6 @@ var balls = function() {
   shape.setFriction(0.3);
   shape.setElasticity(0.3);
 
-  
-
   for (var i = 1; i <= 10; i++) {
     
     var radius = 20;
@@ -458,6 +537,7 @@ var balls = function() {
     var circle = space.addShape(new cp.CircleShape(body, radius, v(0, 0)));
     circle.setElasticity(0.8);
     circle.setFriction(1);
+    circle.setLayers( NOT_GRABABLE_MASK );
   }
 /*
  * atom.canvas.onmousedown = function(e) {
@@ -473,7 +553,7 @@ var balls = function() {
 
   ctx.strokeStyle = "black";
 
-  var ramp = space.addShape(new cp.SegmentShape(space.staticBody, v(100, 100), v(300, 200), 10));
+  var ramp = space.addShape(new cp.SegmentShape(space.staticBody, v(100, 100), v(300, 100), 1));
   ramp.setElasticity(1);
   ramp.setFriction(1);
   ramp.setLayers(NOT_GRABABLE_MASK);

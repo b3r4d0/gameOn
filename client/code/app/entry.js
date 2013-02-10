@@ -20,7 +20,7 @@ ss.server.on('ready', function(){
     
     // Load app
     var app = require('/app');
-    app.awake();
+ 	app.awake();
 
   });
 
