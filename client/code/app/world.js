@@ -31,24 +31,16 @@ var debug       = true;
 //new 
 var stage       = null;
 
-var kitty;
-var kittyShape;
-var kittySprite;
-var kittyPhysics;
-var kittyHeight = 50;
-var kittyWidth  = 50;
-var kittyToon;
-
 var avatar;
 
 exports.awake = function( ) {
 	physics 		  = document.getElementById('physics');
 	
 	physicsWidth 	= physics.width 	= window.innerWidth;   	//full screen
-  physicsHeight = physics.height = window.innerHeight; 	//full screen
+  physicsHeight = physics.height  = window.innerHeight; 	//full screen
 	
 	//physicsWidth 	= canvas.width;   	
-  	//physicsHeight = canvas.height; 	
+  //physicsHeight = canvas.height; 	
 	ctx 		= physics.getContext('2d');
 
 	height = physicsHeight;
@@ -83,30 +75,11 @@ exports.awake = function( ) {
   stage = new createjs.Stage( stageCanvas );
   stage.name = "Feed Me";
 
-  createjs.Ticker.setFPS( 8);
+  createjs.Ticker.setFPS( 30);
   createjs.Ticker.addListener(stage);
 
   avatar = require( "/avatar.js" );
   avatar.awake( stage, physicsWidth, physicsHeight, space );
-
-  //kitty = new createjs.Container();
-
-  //kittyShape = new createjs.Shape();
-  //kittyShape.graphics.beginFill('rgba(255,0,0,1)').drawRoundRect(0,0, kittyWidth, kittyHeight, 10);
-  
-  //kittySprite = new createjs.SpriteSheet({images: ["images/kitty.png"], "animations": {"sit": [0, 0 ], "up": [2, 3]}, frames: [[0,0,219,160,0,20.35,2.85],[219,0,219,160,0,20.35,2.85],[438,0,219,160,0,20.35,2.85],[657,0,219,160,0,20.35,2.85],[0,160,219,160,0,20.35,2.85],[219,160,219,160,0,20.35,2.85],[438,160,219,160,0,20.35,2.85],[657,160,219,160,0,20.35,2.85],[0,320,219,160,0,20.35,2.85],[219,320,219,160,0,20.35,2.85],[438,320,219,160,0,20.35,2.85],[657,320,219,160,0,20.35,2.85],[0,480,219,160,0,20.35,2.85],[219,480,219,160,0,20.35,2.85],[438,480,219,160,0,20.35,2.85],[657,480,219,160,0,20.35,2.85],[0,640,219,160,0,20.35,2.85],[219,640,219,160,0,20.35,2.85],[438,640,219,160,0,20.35,2.85],[657,640,219,160,0,20.35,2.85],[0,800,219,160,0,20.35,2.85],[219,800,219,160,0,20.35,2.85],[438,800,219,160,0,20.35,2.85],[657,800,219,160,0,20.35,2.85],[0,960,219,160,0,20.35,2.85]]});
-  //kittyToon   = new createjs.BitmapAnimation( kittySprite );
-  //kittyToon.gotoAndPlay("sit");
-
-  //kitty.addChild( kittyShape );
-  //kitty.addChild( kittyToon    );
-  //stage.addChild( kitty        );
-
-  //kittyToon.x -= 60;
-  //kittyToon.y -= 100;
-
-  
-  //trace("avatar " + avatar);
 }
 
 
