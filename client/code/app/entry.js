@@ -21,21 +21,27 @@ ss.server.on('ready', function(){
 
   // Wait for the DOM to finish loading
   jQuery(function(){
-    trace("about to start the cosmos");
-    var cosmos1 = require("/vs/Cosmos")(); // dont forget the dog balls
-    cosmos1.awake();
-    cosmos1.core.self = 1;
-    
+   
+    var cosmos1 = require("/vs/Cosmos")("balls");// dont forget the dog balls
+    var cosmos2 = require("/vs/Cosmos")("nuts"); // dont forget the dog balls
+   
+    cosmos1.stop =  "rock";
+    cosmos2.stop =  "roll";
+    cosmos1.bad.rule.ass.step2;
 
-    var cosmos2 = require("/vs/Cosmos")(); // dont forget the dog balls
-    cosmos2.awake();
-    cosmos2.core.self = 2;
-    
-    trace("$ shot1 = " + cosmos1.core.self );
-    trace("$ shot2 = " + cosmos2.core.self );
+    //this is one cool line baby
+    //cosmos1.bad.rule.ass.step2.step3( "step3").cool = "will you let me";
 
 
-  
+    cosmos1.cool = "yeah yeah yeah";
+
+    trace("$ shot1 = " + cosmos1.core);
+    trace("$ shot2 = " + cosmos2.core);
+   
+    trace("should be wierd = " +  cosmos2.core.self );
+ 
+
+
   });
 
 });
