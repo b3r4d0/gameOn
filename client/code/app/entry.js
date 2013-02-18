@@ -22,23 +22,32 @@ ss.server.on('ready', function(){
   // Wait for the DOM to finish loading
   jQuery(function(){
    
-    var cosmos1 = require("/vs/Cosmos")("balls");// dont forget the dog balls
-    var cosmos2 = require("/vs/Cosmos")("nuts"); // dont forget the dog balls
+    var cosmos1 = require("/vs/Cosmos")("balls");
+    var cosmos2 = require("/vs/Cosmos")("nuts"); 
    
-    cosmos1.stop =  "rock";
-    cosmos2.stop =  "roll";
-    cosmos1.bad.rule.ass.step2;
+    trace("whats in a name "        + cosmos1.name );
+    trace("whats in a name part 2 " + cosmos1.cosmos.name );
 
-    //this is one cool line baby
-    //cosmos1.bad.rule.ass.step2.step3( "step3").cool = "will you let me";
+    trace("whats in a name "        + cosmos2.name );
+    trace("whats in a name part 2 " + cosmos2.cosmos.name );
+
+    cosmos1.awake();
+    cosmos2.awake();
 
 
-    cosmos1.cool = "yeah yeah yeah";
+    //cosmos1.stop =  "rock";
+    //cosmos2.stop =  "roll";
+    //cosmos1.bad.rule.ass.step2;
+    //cosmos1.cool;
 
-    trace("$ shot1 = " + cosmos1.core);
-    trace("$ shot2 = " + cosmos2.core);
+    
+
+    //cosmos1.cool = "yeah yeah yeah";
+
+    //trace("$ shot1 = " + cosmos1.core);
+    //trace("$ shot2 = " + cosmos2.core);
    
-    trace("should be wierd = " +  cosmos2.core.self );
+    //trace("should be wierd = " +  cosmos2.core.self );
  
 
 

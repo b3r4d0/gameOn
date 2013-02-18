@@ -1,17 +1,13 @@
-var core;
+"use strict";
 
-module.exports = function( $core ){ 
-    core = $core;
+var CosmosControl = function ( $core ) { 
+	
+	//Create the vars
+	var self = Object.create( module, { 
+	core:{ value:$core }
+	});
+
+	return self; 
 };
 
-exports.awake = function (){
-	trace("speak spanish to me");
-}
-
-exports.start = function (){
-
-}
-
-exports.stop = function(){
-
-}
+exports = module.exports = CosmosControl;

@@ -1,11 +1,20 @@
-var core,control,display;
+"use strict";
 
-exports.awake = function ( $core, $control ){
-	core 		= core;
-	control 	= control;
-}
+var CosmosContent = function ( $core, $control ) { 
+	
+	//Create the vars
+	var self = Object.create( module, { 
+	core:{ 		value:$core    },
+	control:{ 	value:$control }
+	});
 
-exports.appear = function (){
-			
+	self.awake = function (){
+		trace( " self has a control " 	+ self.control 		);
+		trace( " self has a core " 		+ self.core.name	);
+		return self;
+	};
 
-}
+	return self; 
+};
+
+exports = module.exports = CosmosContent;

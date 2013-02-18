@@ -1,46 +1,29 @@
-//"use strict";
+"use strict";
 
-var self;
-
-//var set = function( name, method ) { Object.defineProperty( self, name, { set: method} ) };
-
-var Cosmos = function ( $got ) { 
+var Cosmos = function ( $name, $create, $physics ) { 
 	
-	//Create the vars
-	self = Object.create( module, {
-	r: 		{	value:10  },
-	core: 	{ 	value:require( '/vs/cosmos/CosmosCore')( $got ) },
+	var core 		= '/vs/cosmos/CosmosCore';
+	var control		= '/vs/cosmos/CosmosControl';
+	var content		= '/vs/cosmos/CosmosContent';
+
+	core 		= require( core )( $name, $create, $physics );
+	control		= require( control )( core );
+	content		= require( content )( core, control );
+
+	var self 	= Object.create( module, {
+	core: 	{ value:core },
+	control:{ value:control},
+	content:{ value:content}
 	});
 
-	//Create getters and setters
-	Object.defineProperty( self, "cool", { set:function( input ){
-	trace( input );
-	return self;
-		}} );
+	self.core.cosmos = self;
 
-	Object.defineProperty( self, "step2", { set:function( input ){
-			trace( "we are done with step 2 " + input );
-			return self;
-		}} );
+	//PUBLIC API
+	Object.defineProperty( self, "name", 	{ get:function(){ return self.core.name; }} );
+	Object.defineProperty( self, "cosmos", 	{ get:function(){ return self.core.cosmos; }} );
 
-	Object.defineProperty( self, "bad", { get:function( input ){
-			trace( "i am bad" );
-			return self;
-		}} );
-
-	Object.defineProperty( self, "rule", { get:function( input ){
-			trace( "i rule" );
-			return self;
-		}} );
-
-
-	Object.defineProperty( self, "ass", { get:function( input ){
-			trace( "i will kick some ass" );
-			return self;
-		}} );
-
-	self.step3 = function ( inside ){
-		self.step2 = inside;
+	self.awake = function (){
+		self.content.awake();
 		return self;
 	};
 
