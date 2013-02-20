@@ -1,3 +1,6 @@
+
+//less talk more rock
+
 // This file automatically gets called first by SocketStream and must always exist
 
 // Make 'ss' available to all modules and the browser console
@@ -8,6 +11,28 @@ window.trace = function (msg){
 window.ss = require('socketstream');
 // You won't need to require the file like this
 //window.cp = require('chipmunk');
+
+
+window.fun = function ( event ) {
+
+  trace(" mouse up ");
+
+  exports.send("does this work");
+}
+
+// Demonstrates sharing code between modules by exporting function
+exports.send = function(text, cb) {
+   return ss.rpc('soup.fetchFrames', 'client/static/toons/kitty/walk/');
+};
+
+ss.event.on('newMessage', function(message) {
+
+trace("got some thing : " + message.length );
+  
+});
+
+
+///GOOD STUFF
 
 ss.server.on('disconnect', function(){
   console.log('Connection down :-(');
@@ -22,35 +47,41 @@ ss.server.on('ready', function(){
   // Wait for the DOM to finish loading
   jQuery(function(){
    
-    var cosmos1 = require("/vs/Cosmos")("balls");
-    var cosmos2 = require("/vs/Cosmos")("nuts"); 
-   
-    trace("whats in a name "        + cosmos1.name );
-    trace("whats in a name part 2 " + cosmos1.cosmos.name );
+  var stage     = document.getElementById('stage');
 
-    trace("whats in a name "        + cosmos2.name );
-    trace("whats in a name part 2 " + cosmos2.cosmos.name );
+  var cosmos1   = require("/vs/Cosmos")("balls", createjs );
+  cosmos1.server = ss;
+  cosmos1.stage = stage;
+  cosmos1.awake.start;
 
-    cosmos1.awake();
-    cosmos2.awake();
+  
+  trace("attempting to get an avatar working");
+  var avatar1 = cosmos1.avatar = {type:'Avatar', name:'Avatar1', x:100, y:100 };
+  var avatar2 = cosmos1.avatar = {type:'Avatar', name:'Avatar2', x:200, y:300 };
+  
+  trace("still looking for name " + avatar1.name );
+  trace("still looking for name " + avatar2.name );
 
+  trace("adding key up");
+  
+  //window.fun();
 
-    //cosmos1.stop =  "rock";
-    //cosmos2.stop =  "roll";
-    //cosmos1.bad.rule.ass.step2;
-    //cosmos1.cool;
-
-    
-
-    //cosmos1.cool = "yeah yeah yeah";
-
-    //trace("$ shot1 = " + cosmos1.core);
-    //trace("$ shot2 = " + cosmos2.core);
-   
-    //trace("should be wierd = " +  cosmos2.core.self );
- 
-
-
+  //var avatar1 = require("/vs/Avatar")("avatar1", cosmos1 );
+  //var avatar2 = require("/vs/Avatar")("avatar2", cosmos1 );   
   });
 
 });
+
+//the game off was coming up
+//the month of november
+//he must win
+//if he won his place in the pecking order would increase
+//an increase in his pecking position meant 
+//lower blood pressure meant a larger social network
+//a larger social network ment a better looking mate
+//he must win
+//in order to win he must stop biting his fingernails
+//he couldnt stop biting his fingernails
+//he didnt win
+//he didnt win this time
+

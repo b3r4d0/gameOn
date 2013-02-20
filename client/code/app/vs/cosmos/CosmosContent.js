@@ -8,11 +8,15 @@ var CosmosContent = function ( $core, $control ) {
 	control:{ 	value:$control }
 	});
 
+
+
 	self.awake = function (){
-		trace( " self has a control " 	+ self.control 		);
-		trace( " self has a core " 		+ self.core.name	);
-		return self;
+		trace( " self has a control " + self.control 	);
+		trace( " self has a core " 	  + self.core.name	);
+		return self.core.cosmos;
 	};
+
+	self.control.server.fetchToonFrames();
 
 	return self; 
 };
