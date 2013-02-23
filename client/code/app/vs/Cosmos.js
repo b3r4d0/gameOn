@@ -17,21 +17,26 @@
 //If the expected payoff of the new goal is greater than that of the former goal, switch it. 
 //Otherwise persist even though your emotions may tell you that the new thing seems so much bigger 
 
+//A genius brain in action will tackle a problem, find an appropriate set of rules, and derive a solution. 
+//Actually, the speed of processing the rules is not as critical as the skill in choosing the appropriate rules at hand. 
+
 //Important Shit that Needs to Get Done
 
 //Achieve Funding for Kickstarter Game 	(July 	4)
-//Launch Kickstarter 						(April 	3)
+//Launch Kickstarter 					(April 	3)
 
 //Launch Virus							(Feb 	25)
-//Launch (Like a Kitty) Site				(Feb	24)
+//Launch (Like a Kitty) Site			(Feb	24)
 //Launch GlobHammer						(Feb    10) 
 //-------------------
 //create the api for toons
-//format the soul file
+//format the soul file to include toons
 //import soul( through streaming or loading  )
 //load all assets related to the soul
 //place soul on the stage
 //trigger animation
+//play music
+
 
 
 var Cosmos = function ( $name, $create, $physics ) { 
@@ -65,10 +70,63 @@ var Cosmos = function ( $name, $create, $physics ) {
 	Object.defineProperty( self, "avatar", 	{ set:function( input ){return self.control.avatar( input ) }} );
 
 	//Empty Public Getter Actions which can be chained  
-	Object.defineProperty( self, "awake", 	{ get:function(){ return self.content.awake(); }} );
+	Object.defineProperty( self, "awake", 	{ get:function(){
+
+		//and it begins
+		var bitmap = new self.core.create.Bitmap("images/chroma.jpg");
+  		self.core.stage.addChild( bitmap );
+
+
+		return self.content.awake(); 
+	}} );
+
+
 	Object.defineProperty( self, "start", 	{ get:function(){ return self.control.start(); }} );
 	Object.defineProperty( self, "stop", 	{ get:function(){ return self.control.stop(); }} );
 	
+	self.startMusic = function(){
+		self.core.audio1.play();
+		self.core.audio1.addEventListener('ended', 		self.negative );
+	}
+
+	//self.postive = function(){
+	//	self.core.audio3.removeEventListener('ended', 		self.postive );
+	//	self.core.audio1.play();
+	//	self.core.audio0.addEventListener('ended', 		self.negative );
+	//}
+
+	self.negative = function(){
+		self.core.audio1.play();
+		//self.core.audio1.removeEventListener('ended', 	self.negative );
+		//self.core.audio2.addEventListener('ended', 		self.climax );
+	}
+
+	//self.climax = function(){
+	//	self.core.audio3.play();
+	//	self.core.audio3.addEventListener('ended', 		self.postive );
+	//	self.core.audio2.removeEventListener('ended', 	self.climax );
+	//}
+
+	self.core.audio0    = document.getElementById('artist');
+  	self.core.audio1    = document.getElementById('good');
+  	self.core.audio2    = document.getElementById('bad');
+  	self.core.audio3    = document.getElementById('ugly');
+  	self.core.audio0.addEventListener('ended', self.startMusic );
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+
 	return self; 
 };
 

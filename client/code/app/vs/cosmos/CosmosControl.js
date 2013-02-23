@@ -37,6 +37,8 @@ var CosmosControl = function ( $core ) {
 
 	self.execute = function(){
 		self.core.stage.update();
+		//if ( self.core.audio1.currentTime <= 15 ) 	trace("we got first one");
+		//if ( self.core.audio1.currentTime > 15 ) 	trace("we got second one");
 	}
 
 	self.updateServer = function( server ){

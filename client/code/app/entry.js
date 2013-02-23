@@ -13,6 +13,8 @@ window.ss = require('socketstream');
 //window.cp = require('chipmunk');
 
 
+
+
 window.fun = function ( event ) {
 
   trace(" mouse up ");
@@ -42,28 +44,23 @@ ss.server.on('reconnect', function(){
   console.log('Connection back up :-)');
 });
 
+
+
 ss.server.on('ready', function(){
 
   // Wait for the DOM to finish loading
   jQuery(function(){
    
-  var stage     = document.getElementById('stage');
-
+    var stage     = document.getElementById('stage');
+  
   var cosmos1   = require("/vs/Cosmos")("balls", createjs );
   cosmos1.server = ss;
   cosmos1.stage = stage;
   cosmos1.awake.start;
 
-  
-  trace("attempting to get an avatar working");
   var avatar1 = cosmos1.avatar = {type:'Avatar', name:'Avatar1', x:100, y:100 };
   var avatar2 = cosmos1.avatar = {type:'Avatar', name:'Avatar2', x:200, y:300 };
-  
-  trace("still looking for name " + avatar1.name );
-  trace("still looking for name " + avatar2.name );
-
-  trace("adding key up");
-  
+   
   //window.fun();
 
   //var avatar1 = require("/vs/Avatar")("avatar1", cosmos1 );
@@ -73,7 +70,6 @@ ss.server.on('ready', function(){
 });
 
 //the game off was coming up
-//the month of november
 //he must win
 //if he won his place in the pecking order would increase
 //an increase in his pecking position meant 
