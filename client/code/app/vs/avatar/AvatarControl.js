@@ -7,6 +7,11 @@ var AvatarControl = function ( $core ) {
 	core:{ value:$core }
 	});
 
+	self.injectSoul	= function ( soul ){
+		trace("Injecting SOUL" + soul.type );
+		self.core.soul = soul;
+	}
+
 	self.updateCosmosIndex = function( value ){ self.core.cosmosIndex = value; return self.core.avatar; };
 
 	self.updateX = function( value ){ self.core.x = value; return self.core.avatar; };

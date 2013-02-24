@@ -1,12 +1,15 @@
 "use strict";
 
-var AvatarCore = function ( $name, $cosmos ) { 
+var AvatarCore = function ( $name, $type, $cosmos ) { 
 	
 	//Create the vars
 	var self = Object.create( module, { 
-	name:{ 			value:$name 	},
-	id:{ 			value:"no id present", 		writable:true},
+	soul:{			value:null, 				writable:true},
 
+	name:{ 			value:$name 	},
+	type:{ 			value:$type 	},
+	id:{ 			value:"no id present", 		writable:true},
+	
 	//texture loading
 	skin:{ 			value:"folder", 			writable:true},
 	frames:{ 		value:10, 					writable:true},

@@ -1,0 +1,3 @@
+var soul1 = new function (){
+	trace("yo!");
+}

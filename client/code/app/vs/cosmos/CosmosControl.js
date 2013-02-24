@@ -15,14 +15,69 @@ var CosmosControl = function ( $core ) {
 
 		self.core.create.Ticker.addListener( this.core.stage ); //whats the difference
 		self.core.create.Ticker.addEventListener("tick", self.execute ); //whats the difference
-
+		ss.event.on('addSoul', self.soulFromBeyond );
+		ss.event.on('addFrames', self.toonFramesFromBeyond );
   		return self.core.cosmos;
+	}
+
+	self.toonFramesFromBeyond = function ( frameData, type ){
+		
+		trace("get a list of the toons " + frameData );
+		trace(" do you have a type " + type );
+
+		var soul = self.core.souls[ type ];
+		if ( soul == null ) throw new Error( "You got no SOUL");
+		soul.toonFrames = frameData;
+
+		
+		self.checkWaitingRoom( soul.type );
+	}
+
+	self.soulFromBeyond = function ( soulData ){
+		var soul =  soulData;
+		eval( soul );
+
+		var souls = self.core.souls; 
+		if ( souls[ soul.type ] == null) souls[ soul.type ] = soul;
+		trace( "soul typing " + soul.type );
+		self.requestToonFrames( soul.toonFrames, soul.type  );
+	}
+
+	self.requestToonFrames = function ( dir, type ){
+		ss.rpc('toon.fetchFrames', "client/static/images/toons/" + dir, type );
+	}
+
+	self.checkWaitingRoom = function ( type ){
+
+		var soul = self.core.souls[ type ];
+		var max = self.core.waitingRoomList.length;
+
+		var remove = [];
+		var i;
+
+		for ( i = 0; i < max; i++ )
+		{
+			var avatar = self.core.waitingRoomList[ i ];
+			
+			if ( avatar.type == type ) {
+				avatar.soul =  Object.create( soul );
+				remove.push( i );
+			}
+		}
+
+		max = remove.length;
+
+		for ( i = 0; i < max; i++ ){ self.core.waitingRoomList.splice( remove[ i ] ); }
+
+		var max = self.core.waitingRoomList.length;
+		trace("number in waiting room " + max );
+
 	}
 
 	self.stop = function(){
 		if ( self.core.create 	== null ) throw new Error( self.core.createError );
 		
-		self.core.create.Ticker.removeListener( this.core.stage ); //whats the difference
+		self.core.create.Ticker.removeListener( this.core.stage ); 			//whats the difference
 		self.core.create.Ticker.removeEventListener("tick", self.execute ); //whats the difference
 
 		return self.core.cosmos;
@@ -37,8 +92,44 @@ var CosmosControl = function ( $core ) {
 
 	self.execute = function(){
 		self.core.stage.update();
-		//if ( self.core.audio1.currentTime <= 15 ) 	trace("we got first one");
-		//if ( self.core.audio1.currentTime > 15 ) 	trace("we got second one");
+		if ( self.core.audio1.currentTime <= 15.5 	&& self.core.scene1 == false ) self.scene1();
+		if ( self.core.audio1.currentTime > 17.5	&& self.core.scene2 == false && self.core.scene3 != true )  self.scene2();
+		if ( self.core.audio1.currentTime > 18.5 	&& self.core.scene3 == false)  self.scene3();	
+	}
+
+	self.scene1 = function(){
+		trace("scene1");
+		self.core.scene1 = true;
+		self.core.scene2 = false;
+		self.core.scene3 = false;
+		//self.core.souls.gotoAndPlay("circle");
+	}
+
+	self.scene2 = function(){
+		trace("scene2");
+		self.core.scene1 = false;
+		self.core.scene2 = true;
+		self.core.scene3 = false;
+		//self.core.souls.gotoAndPlay("rad");
+	}
+
+	self.scene3 = function(){
+		trace("scene 3");
+		self.core.scene1 = false;
+		self.core.scene2 = false;
+		self.core.scene3 = true;
+		//self.core.souls.gotoAndPlay("rad");
+	}
+
+
+	self.scene2 = function(){
+		self.core.scene1 = false;
+		self.core.scene2 = true;
+		//self.core.souls.gotoAndPlay("rad");
+	}
+
+	self.scene3 = function(){
+
 	}
 
 	self.updateServer = function( server ){
@@ -51,26 +142,51 @@ var CosmosControl = function ( $core ) {
 	}
 
 	//looks for data object to build avatar
-	//{type:'/vs/Avatar', name:'AvatarName', x:10, y:10, texture:"folder/folder" }
+	//{type:'AvatarType', name:'AvatarName', x:10, y:10 }
 	self.avatar = function( data ){
 		
 		if ( data.type == null ) throw new Error( self.core.avatarError );
 		if ( data.name == null ) data.name = 'No Name';
 
-		var avatar = require( self.core.avatarSrc + data.type )( data.name, self.core.cosmos );
+		var core = self.core;
+
+		var avatar = require( core.avatarSrc + "Avatar" )( data.name, data.type, core.cosmos );
 		avatar.awake;
-		self.core.avatars[ avatar.id ] = avatar;
-		avatar.cosmosIndex = self.core.avatarList.length;
-		
-		self.core.avatarList.push( avatar );
+		core.avatars[ avatar.id ] = avatar;
+		avatar.cosmosIndex = core.avatarList.length;
+		core.avatarList.push( avatar );
+		avatar.type = data.type;
 
 		if ( data.x != null ) avatar.x = data.x;
 		if ( data.y != null ) avatar.y = data.y;
+	
+		if ( core.souls[ data.type ] == null)
+		{
+			var call = core.soulSrc;
+			self.addToWaitingRoom( avatar );
+			ss.rpc('soul.fetchSoul', call + data.type + '.js' );
+			return avatar;
+		}
 
-		//if ( data.skin != null ) avatar.skin 
-		//self.loadSkin( data.skin);  
-		
 		return avatar;
+	}
+
+	self.addToWaitingRoom = function( avatar ){
+		
+		//if ( self.checkWaitingRoomExist ) return;
+		trace("are you adding to the waiting " + avatar.id );
+		self.core.waitingRoom[ avatar.id ] = avatar;
+		self.core.waitingRoomList.push( avatar );
+	}
+
+	self.checkWaitingRoomExist = function( avatar ){
+		var exist = false;
+
+		return exist;
+	}
+
+	self.addSoul = function ( name, soul){
+		self.core.souls[name] = soul;
 	}
 
 	self.loadSkin = function( skin ){

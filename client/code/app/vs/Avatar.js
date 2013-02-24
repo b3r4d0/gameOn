@@ -1,12 +1,12 @@
 "use strict";
 
-var Avatar = function ( $name, $cosmos ) { 
+var Avatar = function ( $name, $type, $cosmos ) { 
 	
 	var core 	= '/vs/avatar/AvatarCore';
 	var control	= '/vs/avatar/AvatarControl';
 	var content	= '/vs/avatar/AvatarContent';
 
-	core 		= require( core )( $name, $cosmos );
+	core 		= require( core )( $name, $type, $cosmos );
 	control		= require( control )( core );
 	content		= require( content )( core, control );
 
@@ -19,6 +19,15 @@ var Avatar = function ( $name, $cosmos ) {
 	self.core.cosmos = self;
 
 	//PUBLIC API
+	Object.defineProperty( self, "soul", { configurable:true, set:function( input ){ 
+		self.control.injectSoul( input );
+		self.awake; 
+	}} );
+
+	Object.defineProperty( self, "awake", { get:function(){ 
+		return self.content.awake(); 
+	}} );
+
 	Object.defineProperty( self, "cosmosIndex", { configurable:true, set:function( input ){ self.control.updateCosmosIndex( input ) }} );
 	Object.defineProperty( self, "cosmosIndex", { configurable:true, get:function(){ return self.core.cosmosIndex; }} );
 
@@ -28,6 +37,8 @@ var Avatar = function ( $name, $cosmos ) {
 	Object.defineProperty( self, "y", { configurable:true, set:function( input ){ self.control.updateY( input ) }} );
 	Object.defineProperty( self, "y", { configurable:true, get:function(){ return self.core.y; }} );
 
+
+
 	Object.defineProperty( self, "name", 		{ get:function(){ return self.core.name; 		}} );
 	Object.defineProperty( self, "id", 			{ get:function(){ return self.core.id; 			}} );
 
@@ -35,7 +46,7 @@ var Avatar = function ( $name, $cosmos ) {
 
 
 	//Empty Public Actions which can be chained without need to include () 
-	Object.defineProperty( self, "awake", 		{ get:function(){ return self.content.awake(); }} );
+	
 	//Object.defineProperty( self, "start", 	{ get:function(){ return self.control.start(); }} );
 	//Object.defineProperty( self, "stop", 	{ get:function(){ return self.control.stop(); }} );
 

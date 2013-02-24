@@ -24,14 +24,8 @@ window.fun = function ( event ) {
 
 // Demonstrates sharing code between modules by exporting function
 exports.send = function(text, cb) {
-   return ss.rpc('soup.fetchFrames', 'client/static/toons/kitty/walk/');
+  // return ss.rpc('soul.fetchSoul', 'client/static/images/soul/Sun.js');
 };
-
-ss.event.on('newMessage', function(message) {
-
-trace("got some thing : " + message.length );
-  
-});
 
 
 ///GOOD STUFF
@@ -58,8 +52,8 @@ ss.server.on('ready', function(){
   cosmos1.stage = stage;
   cosmos1.awake.start;
 
-  var avatar1 = cosmos1.avatar = {type:'Avatar', name:'Avatar1', x:100, y:100 };
-  var avatar2 = cosmos1.avatar = {type:'Avatar', name:'Avatar2', x:200, y:300 };
+  //var avatar1 = cosmos1.avatar = {type:'Avatar', name:'Avatar1', x:100, y:100 };
+  //var avatar2 = cosmos1.avatar = {type:'Avatar', name:'Avatar2', x:200, y:300 };
    
   //window.fun();
 

@@ -10,6 +10,7 @@ var AvatarContent = function ( $core, $control ) {
 
 	self.awake = function (){
 		
+		trace("AWAKE " + self.core.name );
 		return self.core.avatar;
 	};
 

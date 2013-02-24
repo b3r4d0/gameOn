@@ -37,8 +37,6 @@
 //trigger animation
 //play music
 
-
-
 var Cosmos = function ( $name, $create, $physics ) { 
 	
 	var core 		= '/vs/cosmos/CosmosCore';
@@ -71,12 +69,7 @@ var Cosmos = function ( $name, $create, $physics ) {
 
 	//Empty Public Getter Actions which can be chained  
 	Object.defineProperty( self, "awake", 	{ get:function(){
-
-		//and it begins
-		var bitmap = new self.core.create.Bitmap("images/chroma.jpg");
-  		self.core.stage.addChild( bitmap );
-
-
+		self.avatar = {type:'Sun', x:100, y:100 };
 		return self.content.awake(); 
 	}} );
 
@@ -96,7 +89,7 @@ var Cosmos = function ( $name, $create, $physics ) {
 	//}
 
 	self.negative = function(){
-		self.core.audio1.play();
+		//self.core.audio1.play();
 		//self.core.audio1.removeEventListener('ended', 	self.negative );
 		//self.core.audio2.addEventListener('ended', 		self.climax );
 	}
@@ -111,21 +104,7 @@ var Cosmos = function ( $name, $create, $physics ) {
   	self.core.audio1    = document.getElementById('good');
   	self.core.audio2    = document.getElementById('bad');
   	self.core.audio3    = document.getElementById('ugly');
-  	self.core.audio0.addEventListener('ended', self.startMusic );
-
-  
-
-
-
-
-
-
-
-
-
-
-
-
+  	//self.core.audio0.addEventListener('ended', self.startMusic );
 
 	return self; 
 };
