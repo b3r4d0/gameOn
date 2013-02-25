@@ -58,18 +58,36 @@ var Cosmos = function ( $name, $create, $physics ) {
 	//PUBLIC API
 	Object.defineProperty( self, "name", 	{ get:function(){ return self.core.name; }} );
 	Object.defineProperty( self, "cosmos", 	{ get:function(){ return self.core.cosmos; }} );
+	Object.defineProperty( self, "height", 	{ get:function(){ return self.core.stageHeight; }} );
+	Object.defineProperty( self, "width", 	{ get:function(){ return self.core.stageWidth; }} );
 	Object.defineProperty( self, "server", 	{ configurable:true,  get:function(){ return self.core.server; }} );
 	Object.defineProperty( self, "UUID", 	{ get:function(){ return self.control.createUID() ; }} );
 
+	Object.defineProperty( self, "stage", 	{  configurable:true, set:function( input ){return self.control.createStage( input ) }} );
+	Object.defineProperty( self, "stage", 	{  configurable:true, get:function(){ return self.core.stage; }} );
 
-	Object.defineProperty( self, "stage", 	{ set:function( input ){return self.control.createStage( input ) }} );
 	Object.defineProperty( self, "server", 	{ configurable:true, set:function( input ){return self.control.updateServer( input ) }} );
 	Object.defineProperty( self, "create", 	{ set:function( input ){return self.core.create = input }} );
 	Object.defineProperty( self, "avatar", 	{ set:function( input ){return self.control.avatar( input ) }} );
 
 	//Empty Public Getter Actions which can be chained  
 	Object.defineProperty( self, "awake", 	{ get:function(){
-		self.avatar = {type:'Sun', x:100, y:100 };
+		
+		for ( var i = 0; i < 200; i++ )
+		{
+			var posX = Math.random() * self.width;
+			var posY = Math.random() * self.height;
+			self.avatar = {type:'Sun', x:posX, y:posY };
+		}
+
+		for ( var i = 0; i < 200; i++ )
+		{
+			var posX = Math.random() * self.width;
+			var posY = Math.random() * self.height;
+			self.avatar = {type:'Sun', x:posX, y:posY };
+		}
+
+		
 		return self.content.awake(); 
 	}} );
 

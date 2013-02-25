@@ -16,7 +16,7 @@ var Avatar = function ( $name, $type, $cosmos ) {
 	content:    { value:content }
 	});
 
-	self.core.cosmos = self;
+	//self.core.cosmos = self;
 
 	//PUBLIC API
 	Object.defineProperty( self, "soul", { configurable:true, set:function( input ){ 
@@ -41,6 +41,7 @@ var Avatar = function ( $name, $type, $cosmos ) {
 
 	Object.defineProperty( self, "name", 		{ get:function(){ return self.core.name; 		}} );
 	Object.defineProperty( self, "id", 			{ get:function(){ return self.core.id; 			}} );
+	Object.defineProperty( self, "cosmos", 		{ get:function(){ return self.core.cosmos; 		}} );
 
 	//Object.defineProperty( self, "create", 	{ set:function( input ){return self.core.create = input }} );
 

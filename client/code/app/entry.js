@@ -17,7 +17,7 @@ window.ss = require('socketstream');
 
 window.fun = function ( event ) {
 
-  trace(" mouse up ");
+  //trace(" mouse up ");
 
   exports.send("does this work");
 }
@@ -45,9 +45,9 @@ ss.server.on('ready', function(){
   // Wait for the DOM to finish loading
   jQuery(function(){
    
-    var stage     = document.getElementById('stage');
+  var stage     = document.getElementById('stage');
   
-  var cosmos1   = require("/vs/Cosmos")("balls", createjs );
+  var cosmos1   = require("/vs/Cosmos")("Going Down", createjs );
   cosmos1.server = ss;
   cosmos1.stage = stage;
   cosmos1.awake.start;

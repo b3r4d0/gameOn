@@ -6,13 +6,18 @@ var CosmosCore = function ( $name, $create, $physics ) {
 	var self = Object.create( module, { 
 	name:{ 			value:$name 	},
 
+
 	//Errors
 	createError:{ 		value:"Create JS Library Not Present"	},
 	avatarError:{ 		value:"Avatar Type Not Present "		},
 
 	create:{ 			value:$create	, writable:true },		
 	cosmos:{ 			value:"cosmos"	, writable:true },	
+	
 	stage:{ 			value:"stage"	, writable:true	},
+	stageWidth:{ 		value:0	, writable:true },		
+	stageHeight:{ 		value:0 , writable:true },	
+
 
 	server:{ 			value:"server"	, writable:true	},
 	

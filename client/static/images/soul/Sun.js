@@ -1,7 +1,7 @@
 soul = {
 
 	type:"Sun",
-	toonFrames:"sunOff"
+	toonFrames:"mario"
 }
 
 //if(!com) var com={};

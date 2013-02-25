@@ -8,7 +8,7 @@ var AvatarControl = function ( $core ) {
 	});
 
 	self.injectSoul	= function ( soul ){
-		trace("Injecting SOUL" + soul.type );
+		
 		self.core.soul = soul;
 	}
 

@@ -21,15 +21,9 @@ var CosmosControl = function ( $core ) {
 	}
 
 	self.toonFramesFromBeyond = function ( frameData, type ){
-		
-		trace("get a list of the toons " + frameData );
-		trace(" do you have a type " + type );
-
 		var soul = self.core.souls[ type ];
 		if ( soul == null ) throw new Error( "You got no SOUL");
-		soul.toonFrames = frameData;
-
-		
+		soul.toonFrames = frameData;		
 		self.checkWaitingRoom( soul.type );
 	}
 
@@ -39,12 +33,18 @@ var CosmosControl = function ( $core ) {
 
 		var souls = self.core.souls; 
 		if ( souls[ soul.type ] == null) souls[ soul.type ] = soul;
-		trace( "soul typing " + soul.type );
+		
 		self.requestToonFrames( soul.toonFrames, soul.type  );
 	}
 
 	self.requestToonFrames = function ( dir, type ){
-		ss.rpc('toon.fetchFrames', "client/static/images/toons/" + dir, type );
+		var source = "client/static/images/toons/";
+
+		var s = source.split('static/');
+		trace( "SPLIT ::: " + s[1] );
+
+
+		ss.rpc('toon.fetchFrames', source + dir, type );
 	}
 
 	self.checkWaitingRoom = function ( type ){
@@ -70,8 +70,7 @@ var CosmosControl = function ( $core ) {
 		for ( i = 0; i < max; i++ ){ self.core.waitingRoomList.splice( remove[ i ] ); }
 
 		var max = self.core.waitingRoomList.length;
-		trace("number in waiting room " + max );
-
+		
 	}
 
 	self.stop = function(){
@@ -85,8 +84,12 @@ var CosmosControl = function ( $core ) {
 
 	self.createStage = function ( canvas ){
 		if ( self.core.create 	== null ) throw new Error( self.core.createError );
-		this.core.stage 		= new this.core.create.Stage( canvas );
-  		this.core.stage.name 	= this.core.name;
+		
+		self.core.stage 		= new self.core.create.Stage( canvas );
+  		self.core.stage.name 	= self.core.name;
+  		self.core.stageWidth	= canvas.width;
+  		self.core.stageHeight   = canvas.height;
+
 		return self.core.cosmos;
 	};
 
@@ -151,11 +154,12 @@ var CosmosControl = function ( $core ) {
 		var core = self.core;
 
 		var avatar = require( core.avatarSrc + "Avatar" )( data.name, data.type, core.cosmos );
-		avatar.awake;
 		core.avatars[ avatar.id ] = avatar;
 		avatar.cosmosIndex = core.avatarList.length;
 		core.avatarList.push( avatar );
 		avatar.type = data.type;
+
+		trace( "FLYNN CRUSH " + core.cosmos.stage );
 
 		if ( data.x != null ) avatar.x = data.x;
 		if ( data.y != null ) avatar.y = data.y;
@@ -174,7 +178,7 @@ var CosmosControl = function ( $core ) {
 	self.addToWaitingRoom = function( avatar ){
 		
 		//if ( self.checkWaitingRoomExist ) return;
-		trace("are you adding to the waiting " + avatar.id );
+		
 		self.core.waitingRoom[ avatar.id ] = avatar;
 		self.core.waitingRoomList.push( avatar );
 	}
