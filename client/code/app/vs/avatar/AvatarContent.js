@@ -38,10 +38,6 @@ var AvatarContent = function ( $core, $control ) {
 
 		circle2.x = self.core.x;
 		circle2.y = self.core.y;
-
-		trace( "X: " + circle2.x );
-		trace( "Y: " + circle2.y);
-
 		return self.core.avatar;
 	};
 

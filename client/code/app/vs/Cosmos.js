@@ -73,21 +73,20 @@ var Cosmos = function ( $name, $create, $physics ) {
 	//Empty Public Getter Actions which can be chained  
 	Object.defineProperty( self, "awake", 	{ get:function(){
 		
-		for ( var i = 0; i < 200; i++ )
-		{
-			var posX = Math.random() * self.width;
-			var posY = Math.random() * self.height;
-			self.avatar = {type:'Sun', x:posX, y:posY };
-		}
+		//for ( var i = 0; i < 200; i++ )
+		//{
+		//	var posX = Math.random() * self.width;
+		//	var posY = Math.random() * self.height;
+		//	self.avatar = {type:'Sun', x:posX, y:posY };
+		//}
 
-		for ( var i = 0; i < 200; i++ )
-		{
-			var posX = Math.random() * self.width;
-			var posY = Math.random() * self.height;
-			self.avatar = {type:'Sun', x:posX, y:posY };
-		}
+		//for ( var i = 0; i < 200; i++ )
+		//{
+		//	var posX = Math.random() * self.width;
+		//	var posY = Math.random() * self.height;
+		//	self.avatar = {type:'Sun', x:posX, y:posY };
+		//}
 
-		
 		return self.content.awake(); 
 	}} );
 

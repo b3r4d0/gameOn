@@ -2,22 +2,43 @@
 
 var CosmosControl = function ( $core ) { 
 	
-	var serverLoc		= '/vs/cosmos/ServerControl';
-
 	var self = Object.create( module, { 
 	core:{ value:$core },
-	server:{ value:require( serverLoc )( $core ) }
 	});
 
 	self.start = function (){
 		if ( self.core.create 	== null ) throw new Error( self.core.createError );
-		self.core.create.Ticker.setFPS( 30 );
+		self.core.create.Ticker.setFPS( 60 );
+		self.core.startTime = Date.now();
+		self.core.prevTime = self.core.startTime; 
 
 		self.core.create.Ticker.addListener( this.core.stage ); //whats the difference
 		self.core.create.Ticker.addEventListener("tick", self.execute ); //whats the difference
 		ss.event.on('addSoul', self.soulFromBeyond );
 		ss.event.on('addFrames', self.toonFramesFromBeyond );
   		return self.core.cosmos;
+	}
+
+	self.calcFPS = function (){
+		var time = Date.now();
+		var core = self.core;
+		core.ms = time - core.startTime;
+			core.msMin = Math.min( core.msMin, core.ms );
+			core.msMax = Math.max( core.msMax, core.ms );
+
+			core.frames ++;
+
+			if ( time > core.prevTime + 1000 ) {
+
+				core.fps = Math.round( ( core.frames * 1000 ) / ( time - core.prevTime ) );
+				core.fpsMin = Math.min( core.fpsMin, core.fps );
+				core.fpsMax = Math.max( core.fpsMax, core.fps );
+
+				core.prevTime = time;
+				core.frames = 0;
+			}
+
+			return time;
 	}
 
 	self.toonFramesFromBeyond = function ( frameData, type ){
@@ -39,11 +60,6 @@ var CosmosControl = function ( $core ) {
 
 	self.requestToonFrames = function ( dir, type ){
 		var source = "client/static/images/toons/";
-
-		var s = source.split('static/');
-		trace( "SPLIT ::: " + s[1] );
-
-
 		ss.rpc('toon.fetchFrames', source + dir, type );
 	}
 
@@ -70,7 +86,6 @@ var CosmosControl = function ( $core ) {
 		for ( i = 0; i < max; i++ ){ self.core.waitingRoomList.splice( remove[ i ] ); }
 
 		var max = self.core.waitingRoomList.length;
-		
 	}
 
 	self.stop = function(){
@@ -93,11 +108,19 @@ var CosmosControl = function ( $core ) {
 		return self.core.cosmos;
 	};
 
-	self.execute = function(){
+	self.run = function(){
+		
+		var posX = Math.random() * self.core.stageWidth;
+		var posY = Math.random() * self.core.stageHeight;
+		self.core.cosmos.avatar = {type:'Sun', x:posX, y:posY };
+
+		self.calcFPS();
+		self.core.cosmos.content.execute();
 		self.core.stage.update();
-		if ( self.core.audio1.currentTime <= 15.5 	&& self.core.scene1 == false ) self.scene1();
-		if ( self.core.audio1.currentTime > 17.5	&& self.core.scene2 == false && self.core.scene3 != true )  self.scene2();
-		if ( self.core.audio1.currentTime > 18.5 	&& self.core.scene3 == false)  self.scene3();	
+
+		//if ( self.core.audio1.currentTime <= 15.5 && self.core.scene1 == false ) self.scene1();
+		//if ( self.core.audio1.currentTime > 17.5	&& self.core.scene2 == false && self.core.scene3 != true )  self.scene2();
+		//if ( self.core.audio1.currentTime > 18.5 	&& self.core.scene3 == false)  self.scene3();	
 	}
 
 	self.scene1 = function(){
@@ -159,12 +182,11 @@ var CosmosControl = function ( $core ) {
 		core.avatarList.push( avatar );
 		avatar.type = data.type;
 
-		trace( "FLYNN CRUSH " + core.cosmos.stage );
-
 		if ( data.x != null ) avatar.x = data.x;
 		if ( data.y != null ) avatar.y = data.y;
 	
-		if ( core.souls[ data.type ] == null)
+		var soul = core.souls[ data.type ]; 
+		if ( soul  == null)
 		{
 			var call = core.soulSrc;
 			self.addToWaitingRoom( avatar );
@@ -172,13 +194,13 @@ var CosmosControl = function ( $core ) {
 			return avatar;
 		}
 
+		avatar.soul =  Object.create( soul );
+
 		return avatar;
 	}
 
 	self.addToWaitingRoom = function( avatar ){
-		
 		//if ( self.checkWaitingRoomExist ) return;
-		
 		self.core.waitingRoom[ avatar.id ] = avatar;
 		self.core.waitingRoomList.push( avatar );
 	}

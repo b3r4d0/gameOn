@@ -13,8 +13,6 @@ window.ss = require('socketstream');
 //window.cp = require('chipmunk');
 
 
-
-
 window.fun = function ( event ) {
 
   //trace(" mouse up ");

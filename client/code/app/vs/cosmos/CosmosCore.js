@@ -38,7 +38,24 @@ var CosmosCore = function ( $name, $create, $physics ) {
 	scene3:{ 			value:false		, writable:true	},
 
 	frameData:{ 		value:{}		, writable:true	},
-	frameDataList:{ 	value:[] 		, writable:true }
+	frameDataList:{ 	value:[] 		, writable:true },
+
+	//FPS 
+	startTime:{ 		value:0		, writable:true	},
+	prevTime:{ 	value:0 		, writable:true },
+	ms:{ 	value:0 		, writable:true },
+	msMin:{ 	value:Infinity 		, writable:true },
+	msMax:{ 	value:0 		, writable:true },
+	fps:{ 	value:0 		, writable:true },
+	fpsMin:{ 	value:Infinity 		, writable:true },
+	fpsMax:{ 	value:0 		, writable:true },
+	frames:{ 	value:0 		, writable:true },
+	mode:{ 	value:0 		, writable:true }
+
+
+
+
+
 	});
 
 	return self; 

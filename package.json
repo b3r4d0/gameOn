@@ -1,7 +1,12 @@
 {
   "name": "gameOn",
+  "subdomain": "likeapussy",
+  "domains": [
+    "likeapussy.com",
+    "www.likeapussy.com"
+  ],
   "description": "An awesome real time application",
-  "version": "0.0.1-1",
+  "version": "0.0.1-3",
   "author": "Me <me@mydomain.com>",
   "private": true,
   "engines": {
@@ -14,7 +19,6 @@
     "express": "*",
     "chipmunk": "*"
   },
-  "subdomain": "b3r4d0.gameOn",
   "scripts": {
     "start": "main.js"
   }
