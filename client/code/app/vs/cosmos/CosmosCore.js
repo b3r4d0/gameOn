@@ -18,8 +18,8 @@ var CosmosCore = function ( $name, $create, $physics ) {
 	world:{ 			value:{}	    , writable:true },		
 	
 	stage:{ 			value:"stage"	, writable:true	},
-	stageWidth:{ 		value:0	, writable:true },		
-	stageHeight:{ 		value:0 , writable:true },	
+	width:{ 			value:500	, writable:true },		
+	height:{ 			value:200 , writable:true },	
 
 
 	server:{ 			value:"server"	, writable:true	},

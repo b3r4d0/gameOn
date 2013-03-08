@@ -66,6 +66,8 @@ ss.server.on('ready', function(){
 
 });
 
+
+
 //the game off was coming up
 //he must win
 //if he won his place in the pecking order would increase

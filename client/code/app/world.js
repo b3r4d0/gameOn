@@ -101,6 +101,7 @@ var draw = function() {
   space.eachShape(function(shape) {
     ctx.fillStyle = shape.style();
     shape.draw(ctx, scale, point2canvas);
+    trace("drawing ");
   });
  
 };
