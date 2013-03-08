@@ -1,5 +1,8 @@
 "use strict";
 
+//no rule lasts forever
+//"Let that which does not matter truly slide."
+
 //983 Bushwick ( Bushwicks Living Room )
 //Dean Kamen formula for success: 
 //Pick something you love and make it your life's work. 
@@ -93,6 +96,11 @@ var Cosmos = function ( $name, $create, $physics ) {
 
 	Object.defineProperty( self, "start", 	{ get:function(){ return self.control.start(); }} );
 	Object.defineProperty( self, "stop", 	{ get:function(){ return self.control.stop(); }} );
+
+	self.run = function(){
+		self.content.run();
+	}
+
 	
 	self.startMusic = function(){
 		self.core.audio1.play();

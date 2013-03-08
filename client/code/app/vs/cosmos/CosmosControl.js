@@ -13,7 +13,7 @@ var CosmosControl = function ( $core ) {
 		self.core.prevTime = self.core.startTime; 
 
 		self.core.create.Ticker.addListener( this.core.stage ); //whats the difference
-		self.core.create.Ticker.addEventListener("tick", self.execute ); //whats the difference
+		self.core.create.Ticker.addEventListener("tick", self.run ); //whats the difference
 		ss.event.on('addSoul', self.soulFromBeyond );
 		ss.event.on('addFrames', self.toonFramesFromBeyond );
   		return self.core.cosmos;
@@ -92,7 +92,7 @@ var CosmosControl = function ( $core ) {
 		if ( self.core.create 	== null ) throw new Error( self.core.createError );
 		
 		self.core.create.Ticker.removeListener( this.core.stage ); 			//whats the difference
-		self.core.create.Ticker.removeEventListener("tick", self.execute ); //whats the difference
+		self.core.create.Ticker.removeEventListener("tick", self.run ); //whats the difference
 
 		return self.core.cosmos;
 	}
@@ -110,12 +110,12 @@ var CosmosControl = function ( $core ) {
 
 	self.run = function(){
 		
-		var posX = Math.random() * self.core.stageWidth;
-		var posY = Math.random() * self.core.stageHeight;
-		self.core.cosmos.avatar = {type:'Sun', x:posX, y:posY };
+		//var posX = Math.random() * self.core.stageWidth;
+		//var posY = Math.random() * self.core.stageHeight;
+		//self.core.cosmos.avatar = {type:'Sun', x:posX, y:posY };
 
 		self.calcFPS();
-		self.core.cosmos.content.execute();
+		self.core.cosmos.run();
 		self.core.stage.update();
 
 		//if ( self.core.audio1.currentTime <= 15.5 && self.core.scene1 == false ) self.scene1();

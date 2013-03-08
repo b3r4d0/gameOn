@@ -1,14 +1,14 @@
 {
-  "name": "gameOn",
-  "subdomain": "likeapussy",
+  "name": "globhammer",
+  "subdomain": "globhammer",
   "domains": [
-    "likeapussy.com",
-    "www.likeapussy.com"
+    "globhammer.com",
+    "www.globhammer.com"
   ],
-  "description": "An awesome real time application",
-  "version": "0.0.1-3",
-  "author": "Me <me@mydomain.com>",
-  "private": true,
+  "description": "globhammer",
+  "version": "0.0.1-16",
+  "author": "b3r4d0 <b3r4d0@gmail.com>",
+  "private": false,
   "engines": {
     "node": ">= 0.6.0"
   },

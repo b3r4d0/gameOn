@@ -4,27 +4,34 @@ var CosmosContent = function ( $core, $control ) {
 	
 	//Create the vars
 	var self = Object.create( module, { 
-	core:{ 		value:$core    },
+	core:{ 		value:$core    	},
 	control:{ 	value:$control },
 
 	fps:{ 	value:null, writable:true },
 	});
 
 	self.awake = function (){
-		self.fps = new createjs.Text("Hello World" );
- 		self.fps.x = 100;
- 		self.fps.y = 100;
+		self.fps = new createjs.Text("!!!",  "12px Arial" );
+		
+ 		self.fps.x = 30;
+ 		self.fps.y = 10;
  		self.fps.textBaseline = "alphabetic"; 		
 		
 		return self.core.cosmos;
 	};
 
 	self.run = function(){
-		var posX = Math.random() * self.core.stageWidth;
-		var posY = Math.random() * self.core.stageHeight;
+
+		if ( self.core.fps < 24 || self.core.avatarList.length > 0 ) return;
+
+		var posX = 0;
+		var posY = 0;
+
+		//trace( document.URL );
+
 		self.core.cosmos.avatar = {type:'Sun', x:posX, y:posY };
 	
-		self.fps.text = "FPS: " + self.core.fps + " Pussys: " + self.core.avatarList.length;
+		self.fps.text = "";
 		self.core.stage.addChild( self.fps );
 		self.core.stage.update();
 	}

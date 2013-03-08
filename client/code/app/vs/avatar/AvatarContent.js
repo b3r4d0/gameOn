@@ -24,11 +24,11 @@ var AvatarContent = function ( $core, $control ) {
 		{
 			var src = soul.toonFrames[ i ];
 			var bitmap = new createjs.Bitmap( src );
-			var index = builder.addFrame( bitmap, new createjs.Rectangle(-0,-0, 75, 75 ));
+			var index = builder.addFrame( bitmap, new createjs.Rectangle(-0,-0, soul.width, soul.height ));
 			frames.push( index );
 		}
 
-		builder.addAnimation("circle", frames, true, 5 );
+		builder.addAnimation("circle", frames, true, 8);
 		var spriteSheet = builder.build();
 
 		// create our bitmap animations using the generated sprite sheet, and put them on stage:
@@ -38,6 +38,7 @@ var AvatarContent = function ( $core, $control ) {
 
 		circle2.x = self.core.x;
 		circle2.y = self.core.y;
+		circle2.scaleX = circle2.scaleY = .5;
 		return self.core.avatar;
 	};
 
