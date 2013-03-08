@@ -50,7 +50,10 @@ ss.server.on('ready', function(){
   var cosmos1   = require("/vs/Cosmos")("Going Down", createjs );
   cosmos1.server = ss;
   cosmos1.stage = stage;
-  cosmos1.awake.start;
+  
+  //load the world
+  cosmos1.world = {type:"Level1"};
+  //
 
   //var avatar1 = cosmos1.avatar = {type:'Avatar', name:'Avatar1', x:100, y:100 };
   //var avatar2 = cosmos1.avatar = {type:'Avatar', name:'Avatar2', x:200, y:300 };

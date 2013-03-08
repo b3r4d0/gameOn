@@ -38,7 +38,7 @@ var AvatarContent = function ( $core, $control ) {
 
 		circle2.x = self.core.x;
 		circle2.y = self.core.y;
-		circle2.scaleX = circle2.scaleY = .5;
+		
 		return self.core.avatar;
 	};
 

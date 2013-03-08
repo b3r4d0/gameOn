@@ -12,11 +12,24 @@ var CosmosControl = function ( $core ) {
 		self.core.startTime = Date.now();
 		self.core.prevTime = self.core.startTime; 
 
-		self.core.create.Ticker.addListener( this.core.stage ); //whats the difference
+		trace("are you starting anything");
+		
 		self.core.create.Ticker.addEventListener("tick", self.run ); //whats the difference
+
 		ss.event.on('addSoul', self.soulFromBeyond );
 		ss.event.on('addFrames', self.toonFramesFromBeyond );
+		
   		return self.core.cosmos;
+	}
+
+	self.world = function( data ){
+
+		if ( data.type == null ) throw new Error( "WORLD data type is not present ");
+		var core = self.core;
+		var call = core.worldSrc;
+
+		ss.event.on('addWorld', self.worldFromBeyond );
+		ss.rpc('world.fetchWorld', call + data.type + '.js' ); //needs to be moved into server control
 	}
 
 	self.calcFPS = function (){
@@ -41,6 +54,26 @@ var CosmosControl = function ( $core ) {
 			return time;
 	}
 
+	self.worldFromBeyond = function( worldData ){
+		
+		trace("we do have a world from beyond ");
+
+		var world = worldData;
+		eval( world );
+
+		var sourceStart = self.start;
+
+		self.start = function() {
+     		sourceStart();
+     		world.start();
+		}
+
+		self.run = world.run;
+		self.start();
+
+		//trace("do you have a world" + worldData );
+	}
+
 	self.toonFramesFromBeyond = function ( frameData, type ){
 		var soul = self.core.souls[ type ];
 		if ( soul == null ) throw new Error( "You got no SOUL");
@@ -49,6 +82,9 @@ var CosmosControl = function ( $core ) {
 	}
 
 	self.soulFromBeyond = function ( soulData ){
+		
+		trace("we have a soul from beyond ");
+
 		var soul =  soulData;
 		eval( soul );
 
@@ -57,6 +93,7 @@ var CosmosControl = function ( $core ) {
 		
 		self.requestToonFrames( soul.toonFrames, soul.type  );
 	}
+
 
 	self.requestToonFrames = function ( dir, type ){
 		var source = "client/static/images/toons/";
@@ -114,9 +151,8 @@ var CosmosControl = function ( $core ) {
 		//var posY = Math.random() * self.core.stageHeight;
 		//self.core.cosmos.avatar = {type:'Sun', x:posX, y:posY };
 
-		self.calcFPS();
-		self.core.cosmos.run();
-		self.core.stage.update();
+		
+		
 
 		//if ( self.core.audio1.currentTime <= 15.5 && self.core.scene1 == false ) self.scene1();
 		//if ( self.core.audio1.currentTime > 17.5	&& self.core.scene2 == false && self.core.scene3 != true )  self.scene2();
@@ -182,6 +218,8 @@ var CosmosControl = function ( $core ) {
 		core.avatarList.push( avatar );
 		avatar.type = data.type;
 
+		trace("something in the way the avatar moves ");
+
 		if ( data.x != null ) avatar.x = data.x;
 		if ( data.y != null ) avatar.y = data.y;
 	
@@ -190,7 +228,7 @@ var CosmosControl = function ( $core ) {
 		{
 			var call = core.soulSrc;
 			self.addToWaitingRoom( avatar );
-			ss.rpc('soul.fetchSoul', call + data.type + '.js' );
+			ss.rpc('soul.fetchSoul', call + data.type + '.js' ); //needs to be moved into server control
 			return avatar;
 		}
 

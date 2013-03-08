@@ -71,31 +71,27 @@ var Cosmos = function ( $name, $create, $physics ) {
 
 	Object.defineProperty( self, "server", 	{ configurable:true, set:function( input ){return self.control.updateServer( input ) }} );
 	Object.defineProperty( self, "create", 	{ set:function( input ){return self.core.create = input }} );
+	
+	Object.defineProperty( self, "world", 	{ set:function( input ){return self.control.world( input ) }} );
 	Object.defineProperty( self, "avatar", 	{ set:function( input ){return self.control.avatar( input ) }} );
 
-	//Empty Public Getter Actions which can be chained  
-	Object.defineProperty( self, "awake", 	{ get:function(){
-		
-		//for ( var i = 0; i < 200; i++ )
-		//{
-		//	var posX = Math.random() * self.width;
-		//	var posY = Math.random() * self.height;
-		//	self.avatar = {type:'Sun', x:posX, y:posY };
-		//}
 
-		//for ( var i = 0; i < 200; i++ )
-		//{
-		//	var posX = Math.random() * self.width;
-		//	var posY = Math.random() * self.height;
-		//	self.avatar = {type:'Sun', x:posX, y:posY };
-		//}
+	//Empty Public Getter Actions which can be chained 
+
+	Object.defineProperty( self, "injectWorld", { get:function(){
+		//this needs to overridden
+		trace("injecting the world");
+		
+
+	return; 
+	}} );
+
+	Object.defineProperty( self, "awake", 	{ get:function(){
+		//this needs to overridden
+		trace("are you awaking from the slumber ");
 
 		return self.content.awake(); 
 	}} );
-
-
-	Object.defineProperty( self, "start", 	{ get:function(){ return self.control.start(); }} );
-	Object.defineProperty( self, "stop", 	{ get:function(){ return self.control.stop(); }} );
 
 	self.run = function(){
 		self.content.run();

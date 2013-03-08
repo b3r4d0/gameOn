@@ -12,7 +12,10 @@ var CosmosCore = function ( $name, $create, $physics ) {
 	avatarError:{ 		value:"Avatar Type Not Present "		},
 
 	create:{ 			value:$create	, writable:true },		
-	cosmos:{ 			value:"cosmos"	, writable:true },	
+	cosmos:{ 			value:"cosmos"	, writable:true },
+
+	worldSrc:{ 			value:"client/static/images/world/"	, writable:true	},
+	world:{ 			value:{}	    , writable:true },		
 	
 	stage:{ 			value:"stage"	, writable:true	},
 	stageWidth:{ 		value:0	, writable:true },		

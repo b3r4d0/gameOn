@@ -22,18 +22,18 @@ var CosmosContent = function ( $core, $control ) {
 
 	self.run = function(){
 
-		if ( self.core.fps < 24 || self.core.avatarList.length > 0 ) return;
+		//if ( self.core.fps < 24 || self.core.avatarList.length > 0 ) return;
 
-		var posX = 0;
-		var posY = 0;
+		//var posX = 0;
+		//var posY = 0;
 
 		//trace( document.URL );
 
-		self.core.cosmos.avatar = {type:'Sun', x:posX, y:posY };
+		//
 	
-		self.fps.text = "";
-		self.core.stage.addChild( self.fps );
-		self.core.stage.update();
+		//self.fps.text = "";
+		//self.core.stage.addChild( self.fps );
+		//self.core.stage.update();
 	}
 
 	return self; 

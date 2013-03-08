@@ -1,19 +1,7 @@
 soul = {
 
 	type:"Sun",
-	toonFrames:"pussy",
-	height:140,
-	width:160
+	toonFrames:"background",
+	height:200,
+	width:500
 }
-
-//if(!com) var com={};
-//if(!com.globhammer) com.globhammer={};
-//if(!com.globhammer.soul) com.globhammer.soul={};
-
-//com.globhammer.soul.Sun = {
-
-
-//   return "we got one";
-//  }
-
-//}
