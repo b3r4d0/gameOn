@@ -12,8 +12,6 @@ var CosmosControl = function ( $core ) {
 		self.core.startTime = Date.now();
 		self.core.prevTime = self.core.startTime; 
 
-		trace("are you starting anything");
-		
 		self.core.create.Ticker.addEventListener("tick", self.run ); //whats the difference
 
 		ss.event.on('addSoul', self.soulFromBeyond );
@@ -56,8 +54,6 @@ var CosmosControl = function ( $core ) {
 
 	self.worldFromBeyond = function( worldData ){
 		
-		trace("we do have a world from beyond ");
-
 		var world = worldData;
 		eval( world );
 
@@ -90,12 +86,11 @@ var CosmosControl = function ( $core ) {
 
 	self.soulFromBeyond = function ( soulData ){
 		
-		trace("we have a soul from beyond ");
-
 		var soul =  soulData;
 		eval( soul );
 
 		var souls = self.core.souls; 
+
 		if ( souls[ soul.type ] == null) souls[ soul.type ] = soul;
 		
 		self.requestToonFrames( soul.toonFrames, soul.type  );
@@ -119,7 +114,11 @@ var CosmosControl = function ( $core ) {
 		{
 			var avatar = self.core.waitingRoomList[ i ];
 			
+			trace("whats in the list " + avatar.type );
+
 			if ( avatar.type == type ) {
+				
+				trace("kick you out of the waiting room " + avatar.type );
 				self.createSoul( avatar, soul );
 				remove.push( i );
 			}
@@ -185,8 +184,6 @@ var CosmosControl = function ( $core ) {
 		core.avatarList.push( avatar );
 		avatar.type = data.type;
 
-		trace("something in the way the avatar moves ");
-
 		if ( data.x != null ) avatar.x = data.x;
 		if ( data.y != null ) avatar.y = data.y;
 	
@@ -235,8 +232,6 @@ var CosmosControl = function ( $core ) {
 
 	self.worldFromBeyond = function( worldData ){
 		
-		trace("we do have a world from beyond ");
-
 		var world = worldData;
 		eval( world );
 

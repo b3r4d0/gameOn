@@ -64,7 +64,6 @@ world = {
     circle.setElasticity(0.8);
     circle.setFriction(1);
 
-    trace( "Look at my type " + avatar.type );
     if ( avatar.type == "Balloon" )   world.balloon = avatar.core.body;
     if ( avatar.type == "Kitty" )     world.kitty = avatar.core.body;
 
