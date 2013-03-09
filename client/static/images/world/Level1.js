@@ -4,24 +4,44 @@ world = {
 	toonFrames:"Level",
 	v:null,
 	scale:1,
-	styles:[], 				  
+	styles:[], 
+  balloon:null,				  
 
 	start:function( ){
 
-    document.onkeypress=function(e){
-    var e=window.event || e
-    //alert("CharCode value: "+e.charCode)
-    //alert("Character: "+String.fromCharCode(e.charCode))
-  }
-    ///JUNK
-		
       world.initPhysics();
   		world.drawBorders();
+      //avatars
+    	world.balloon = self.core.cosmos.avatar = {type:'Balloon', x:0, y:0 };
+      
 
-    	//circle.setLayers( NOT_GRABABLE_MASK );
-
-    	self.core.cosmos.avatar = {type:'Balloon', x:0, y:0 };
+      document.onkeypress = world.keyPress;
 	},
+
+  keyPress:function( e ){
+    var e=window.event || e;
+
+    var body = world.balloon;
+
+    switch ( e.keyCode ) {
+      case 38:
+      body.applyImpulse( world.v ( 0, 10), world.v(0,0 ));
+      break;
+
+      case 40:
+      body.applyImpulse( world.v ( 0, -10), world.v(0,0 ));
+      break;
+
+      case 37:
+      body.applyImpulse( world.v ( -10, 0), world.v(0,0 ));
+      break;
+
+      case 39:
+      body.applyImpulse( world.v ( 0, 10), world.v(0,0 ));
+      break;
+    };
+
+  },
 
   initPhysics:function(){
 
@@ -100,6 +120,10 @@ world = {
     	var circle = world.space.addShape(new cp.CircleShape( avatar.core.body, radius, world.v(0, 0)));
     	circle.setElasticity(0.8);
     	circle.setFriction(1);
+
+       world.balloon = avatar.core.body;
+
+      trace( "avatar type " + avatar.type );
 	},
 
 	drawLine:function(ctx, point2canvas, a, b) {
@@ -227,9 +251,18 @@ world = {
   		wall2.setElasticity(1);
   		wall2.setFriction(1);
 
-  		//var floor = space.floor space.addShape(new cp.SegmentShape(space.staticBody, v( 0, height / 3), v(width, height /2 ), 0));
-  		//floor.setElasticity(1);
-  		//floor.setFriction(5);
+  		var floor = world.space.addShape(new cp.SegmentShape( world.space.staticBody, v( 0, height ), v(width, height ), 0));
+  		
+      floor.setElasticity(1);
+  		floor.setFriction(5);
+
+
+      var floor2 = world.space.addShape(new cp.SegmentShape( world.space.staticBody, v( 0, 0 ), v(width, 0 ), 0));
+      
+      floor2.setElasticity(1);
+      floor2.setFriction(5);
+
+
 	}
 
 	

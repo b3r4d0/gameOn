@@ -199,13 +199,13 @@ var CosmosControl = function ( $core ) {
 			return avatar;
 		}
 
-		self.createSoul( avatar, soul );	
-
-		return avatar;
+		return self.createSoul( avatar, soul );
 	}
 
 	self.createSoul = function ( avatar, soul ){
 		avatar.soul =  Object.create( soul );
+
+		return avatar;
 	}
 
 	self.addToWaitingRoom = function( avatar ){

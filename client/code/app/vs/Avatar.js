@@ -47,6 +47,8 @@ var Avatar = function ( $name, $type, $cosmos ) {
 	Object.defineProperty( self, "id", 			{ get:function(){ return self.core.id; 			}} );
 	Object.defineProperty( self, "cosmos", 		{ get:function(){ return self.core.cosmos; 		}} );
 
+	Object.defineProperty( self, "body", 		{ get:function(){ return self.core.body; 		}} );
+
 	//Object.defineProperty( self, "create", 	{ set:function( input ){return self.core.create = input }} );
 
 
