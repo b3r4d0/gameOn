@@ -8,8 +8,6 @@ world = {
 
 	start:function( ){
 		
-		//self.core.cosmos.avatar = {type:'Sun', x:0, y:0 };
-
 		world.physics  = document.getElementById('physics');
 		world.height  	= self.core.height;
 		world.width 	= self.core.width;
@@ -47,6 +45,10 @@ world = {
     	}
 		};
 
+
+		//http://www.youtube.com/watch?v=EnCL2sYO41Q
+
+
 		cp.SegmentShape.prototype.draw = function(ctx, scale, point2canvas) {
   		var oldLineWidth = ctx.lineWidth;
   		ctx.lineWidth = Math.max(1, this.r * scale * 2);
@@ -62,18 +64,30 @@ world = {
 		};
 
   		world.drawBorders();
-		
+    	//circle.setLayers( NOT_GRABABLE_MASK );
+
+    	self.core.cosmos.avatar = {type:'Sun', x:0, y:0 };
+	},
+
+	createSoul:function( avatar, soul ){
+		trace('this is what i am looking for' + avatar );
+
 		var radius = 20;
     	var mass = 3;
 
-    	var body = world.space.addBody(new cp.Body(mass, cp.momentForCircle(mass, 0, radius, world.v(0, 0))));
-    	body.setPos( world.v( 10, (2 * radius + 5) * 1));
+    	//most important
+    	//
+    	avatar.core.body = world.space.addBody(new cp.Body(mass, cp.momentForCircle(mass, 0, radius, world.v(0, 0))));
     	
-    	var circle = world.space.addShape(new cp.CircleShape( body, radius, world.v(0, 0)));
+    	trace("closer " + avatar.core.body ); 
+    	
+
+    	avatar.core.body.setPos( world.v( 40,  40 ) );
+    	//
+    	
+    	var circle = world.space.addShape(new cp.CircleShape( avatar.core.body, radius, world.v(0, 0)));
     	circle.setElasticity(0.8);
     	circle.setFriction(1);
-    	//circle.setLayers( NOT_GRABABLE_MASK );
-
 	},
 
 	drawLine:function(ctx, point2canvas, a, b) {
@@ -89,13 +103,12 @@ world = {
   },
 
   	drawCircle:function(ctx, scale, point2canvas, c, radius) {
-  
   	//trace("scale " + scale );
-  	//var c = point2canvas(c);
-  	//ctx.beginPath();
-  	//ctx.arc(c.x, c.y, scale * radius, 0, 2*Math.PI, false);
-  	//ctx.fill();
-  	//ctx.stroke();
+  	var c = point2canvas(c);
+  	ctx.beginPath();
+  	ctx.arc(c.x, c.y, scale * radius, 0, 2*Math.PI, false);
+  	ctx.fill();
+  	ctx.stroke();
 },
 
   canvas2point:function(x, y) {
@@ -107,6 +120,46 @@ world = {
 		self.calcFPS();
 		//self.core.cosmos.run();
 		self.core.stage.update(); //shouldnt be here
+
+		var i = 0;
+		var max = self.core.avatarList.length;
+
+		for ( i; i < max; i++ )
+		{
+			var avatar = self.core.avatarList[ i ];
+			
+			var body = avatar.core.body ;
+
+			if ( body != null) 
+			{
+				var v = world.v;
+
+			var newPoint = world.point2canvas( body.p );
+			
+
+			var x = newPoint.x;
+			var y = newPoint.y;
+
+			avatar.x = x;
+			avatar.y = y;
+			avatar.run; 
+
+			trace( "you got a x " + x + "you got a y " + y  );
+
+			//var newPoint = v.lerp( body.p, v, 0.25);
+			//body.v = v.mult(v.sub(newPoint, avatar.core.body.p ), 60);
+			}
+
+			
+  			//avatar.core.body.p = newPoint;
+
+  			//trace( avatar.core.body.v );
+
+			//var x = 
+			//var y =  
+		}
+		//run through the soul list
+		//match up the x to the body x
 
 		//NEW
 		//avatar.update();

@@ -19,7 +19,8 @@ var AvatarCore = function ( $name, $type, $cosmos ) {
 
 	cosmos:{	 	value:$cosmos	, 			writable:true },
 	cosmosIndex:{	value:0			, 			writable:true,  enumerable:true },
-	avatar:{	 	value:"avatar"	, 			writable:true }	
+	avatar:{	 	value:"avatar"	, 			writable:true },	
+	body:{	 		value:null	, 				writable:true }	
 	
 	});
 

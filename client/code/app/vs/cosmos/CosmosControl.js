@@ -66,7 +66,14 @@ var CosmosControl = function ( $core ) {
 		self.start = function() {
      		sourceStart();
      		world.start();
-		}
+		};
+
+		var souceCreateSoul = self.createSoul;
+
+		self.createSoul = function( avatar, soul ){
+			sourceCreateSoul( avatar, soul );
+			world.createSoul( avatar, soul );
+		};
 
 		self.run = world.run;
 		self.start();
@@ -113,7 +120,7 @@ var CosmosControl = function ( $core ) {
 			var avatar = self.core.waitingRoomList[ i ];
 			
 			if ( avatar.type == type ) {
-				avatar.soul =  Object.create( soul );
+				self.createSoul( avatar, soul );
 				remove.push( i );
 			}
 		}
@@ -145,52 +152,8 @@ var CosmosControl = function ( $core ) {
 		return self.core.cosmos;
 	};
 
+	//override
 	self.run = function(){
-		
-		//var posX = Math.random() * self.core.stageWidth;
-		//var posY = Math.random() * self.core.stageHeight;
-		//self.core.cosmos.avatar = {type:'Sun', x:posX, y:posY };
-
-		
-		
-
-		//if ( self.core.audio1.currentTime <= 15.5 && self.core.scene1 == false ) self.scene1();
-		//if ( self.core.audio1.currentTime > 17.5	&& self.core.scene2 == false && self.core.scene3 != true )  self.scene2();
-		//if ( self.core.audio1.currentTime > 18.5 	&& self.core.scene3 == false)  self.scene3();	
-	}
-
-	self.scene1 = function(){
-		trace("scene1");
-		self.core.scene1 = true;
-		self.core.scene2 = false;
-		self.core.scene3 = false;
-		//self.core.souls.gotoAndPlay("circle");
-	}
-
-	self.scene2 = function(){
-		trace("scene2");
-		self.core.scene1 = false;
-		self.core.scene2 = true;
-		self.core.scene3 = false;
-		//self.core.souls.gotoAndPlay("rad");
-	}
-
-	self.scene3 = function(){
-		trace("scene 3");
-		self.core.scene1 = false;
-		self.core.scene2 = false;
-		self.core.scene3 = true;
-		//self.core.souls.gotoAndPlay("rad");
-	}
-
-
-	self.scene2 = function(){
-		self.core.scene1 = false;
-		self.core.scene2 = true;
-		//self.core.souls.gotoAndPlay("rad");
-	}
-
-	self.scene3 = function(){
 
 	}
 
@@ -232,9 +195,13 @@ var CosmosControl = function ( $core ) {
 			return avatar;
 		}
 
-		avatar.soul =  Object.create( soul );
+		self.createSoul( avatar, soul );	
 
 		return avatar;
+	}
+
+	self.createSoul = function ( avatar, soul ){
+		avatar.soul =  Object.create( soul );
 	}
 
 	self.addToWaitingRoom = function( avatar ){
@@ -253,6 +220,7 @@ var CosmosControl = function ( $core ) {
 		self.core.souls[name] = soul;
 	}
 
+		//Delete me
 	self.loadSkin = function( skin ){
 		trace("load the skin " + skin );
 		if ( self.core.create == null ) throw new Error( self.core.createError );
@@ -260,6 +228,34 @@ var CosmosControl = function ( $core ) {
 		var queue = new self.core.create.LoadQueue();
 		trace("Que " + queue );
 	}
+
+	self.worldFromBeyond = function( worldData ){
+		
+		trace("we do have a world from beyond ");
+
+		var world = worldData;
+		eval( world );
+
+		var sourceStart = self.start;
+
+		self.start = function() {
+     		sourceStart();
+     		world.start();
+		};
+
+		var sourceCreateSoul = self.createSoul;
+
+		self.createSoul = function( avatar, soul ){
+			sourceCreateSoul( avatar, soul );
+			world.createSoul( avatar, soul );
+		};
+
+		self.run = world.run;
+		self.start();
+
+		//trace("do you have a world" + worldData );
+	}
+
 
 	return self; 
 };

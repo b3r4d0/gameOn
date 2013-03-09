@@ -28,6 +28,10 @@ var Avatar = function ( $name, $type, $cosmos ) {
 		return self.content.awake(); 
 	}} );
 
+	Object.defineProperty( self, "run", { get:function(){ 
+		return self.content.run(); 
+	}} );
+
 	Object.defineProperty( self, "cosmosIndex", { configurable:true, set:function( input ){ self.control.updateCosmosIndex( input ) }} );
 	Object.defineProperty( self, "cosmosIndex", { configurable:true, get:function(){ return self.core.cosmosIndex; }} );
 
