@@ -41,6 +41,10 @@ var Avatar = function ( $name, $type, $cosmos ) {
 	Object.defineProperty( self, "y", { configurable:true, set:function( input ){ self.control.updateY( input ) }} );
 	Object.defineProperty( self, "y", { configurable:true, get:function(){ return self.core.y; }} );
 
+	Object.defineProperty( self, "height", { configurable:true, get:function(){ return self.core.height; }} );
+	Object.defineProperty( self, "width", { configurable:true, get:function(){ return self.core.width; }} );
+	
+
 
 
 	Object.defineProperty( self, "name", 		{ get:function(){ return self.core.name; 		}} );

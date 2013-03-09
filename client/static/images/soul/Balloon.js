@@ -6,7 +6,7 @@ soul = {
 	height:31,
 	width:28,
 
-	radius:20,
+	radius:10,
 	mass:3,
 	elastic:0.8,
 	friction:1

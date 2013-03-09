@@ -5,23 +5,90 @@ world = {
 	v:null,
 	scale:1,
 	styles:[], 
-  balloon:null,				  
+  balloon:null,
+  kitty:null,				  
 
 	start:function( ){
 
       world.initPhysics();
   		world.drawBorders();
-      //avatars
-    	world.balloon = self.core.cosmos.avatar = {type:'Balloon', x:0, y:0 };
       
-
       document.onkeypress = world.keyPress;
+      //avatars
+    	
+      self.core.cosmos.avatar = {type:'Balloon',  x:0, y:0 };
+      self.core.cosmos.avatar = {type:'Kitty',    x:100, y:100 };
 	},
+
+  run: function ( ){
+    
+    self.calcFPS();
+    self.core.stage.update(); //shouldnt be here
+
+    var i = 0;
+    var max = self.core.avatarList.length;
+
+    for ( i; i < max; i++ )
+    {
+      var avatar = self.core.avatarList[ i ];
+      
+      var body = avatar.core.body ;
+
+      if ( body != null) 
+      {
+          var v = world.v;
+
+           var newPoint = world.point2canvas( body.p );
+           var x = newPoint.x;
+           var y = newPoint.y;
+           avatar.x = x - avatar.width * .5;
+           avatar.y = y - avatar.height * .5;
+           avatar.run; 
+      }
+
+    }
+
+    world.draw();
+
+   },
+
+   createSoul:function( avatar, soul ){
+    
+    var radius = soul.radius;
+    var mass = soul.mass;
+
+    avatar.core.body = world.space.addBody(new cp.Body(mass, cp.momentForCircle(mass, 0, radius, world.v(0, 0))));
+    avatar.core.body.setPos( world.v( 40,  40 ) );
+    
+    var circle = world.space.addShape(new cp.CircleShape( avatar.core.body, radius, world.v(0, 0)));
+    circle.setElasticity(0.8);
+    circle.setFriction(1);
+
+    trace( "Look at my type " + avatar.type );
+    if ( avatar.type == "Balloon" )   world.balloon = avatar.core.body;
+    if ( avatar.type == "Kitty" )     world.kitty = avatar.core.body;
+
+    
+
+    // Slide Joints - Like pin joints but with a min/max distance.
+    // Can be used for a cheap approximation of a rope.
+    var posA = world.v( 50, 60);
+    var posB = world.v( 110, 60);
+    //var boxOffset;
+   //boxOffset = v(160, 0);
+    //label('Slide Joint');
+    //body1 = addBall(posA);
+    //body2 = addBall(posB);
+    //body2.setAngle(Math.PI);
+    //world.space.addConstraint(new cp.SlideJoint(body1, body2, v(15,0), v(15,0), 20, 40));
+
+  },
 
   keyPress:function( e ){
     var e=window.event || e;
 
     var body = world.balloon;
+    if ( body == null ) return;
 
     switch ( e.keyCode ) {
       case 38:
@@ -101,31 +168,6 @@ world = {
     };
   },
 
-	createSoul:function( avatar, soul ){
-		trace('this is what i am looking for' + avatar );
-
-		var radius = 20;
-    	var mass = 3;
-
-    	//most important
-    	//
-    	avatar.core.body = world.space.addBody(new cp.Body(mass, cp.momentForCircle(mass, 0, radius, world.v(0, 0))));
-    	
-    	trace("closer " + avatar.core.body ); 
-    	
-
-    	avatar.core.body.setPos( world.v( 40,  40 ) );
-    	//
-    	
-    	var circle = world.space.addShape(new cp.CircleShape( avatar.core.body, radius, world.v(0, 0)));
-    	circle.setElasticity(0.8);
-    	circle.setFriction(1);
-
-       world.balloon = avatar.core.body;
-
-      trace( "avatar type " + avatar.type );
-	},
-
 	drawLine:function(ctx, point2canvas, a, b) {
   	a = point2canvas(a); b = point2canvas(b);
   	ctx.beginPath();
@@ -151,94 +193,36 @@ world = {
     return world.v(x / world.scale, world.height - y / world.scale);
   },
 
-	run: function ( ){
-		
-		self.calcFPS();
-		//self.core.cosmos.run();
-		self.core.stage.update(); //shouldnt be here
+	
 
-		var i = 0;
-		var max = self.core.avatarList.length;
+   draw:function() {
 
-		for ( i; i < max; i++ )
-		{
-			var avatar = self.core.avatarList[ i ];
-			
-			var body = avatar.core.body ;
+      var ctx = world.ctx;
+      var physics = world.physics;
 
-			if ( body != null) 
-			{
-				var v = world.v;
+      //ctx.clearRect(0, 0, world.width, world.height);
+      //ctx.fillText("Version: " + tag, 0, 0, physicsWidth );
 
-			var newPoint = world.point2canvas( body.p );
-			var x = newPoint.x;
-			var y = newPoint.y;
+      // Draw shapes
+      ctx.strokeStyle = 'black';
+      ctx.clearRect(0, 0, world.width, world.height);
 
+      ctx.font = "16px sans-serif";
+      ctx.lineCap = 'round';
 
-			//var x = body.p.x;
-			//var y = body.p.y;
+      world.space.eachShape(function(shape) {
+        ctx.fillStyle = shape.style();
+        shape.draw( world.ctx, world.scale, world.point2canvas);
+        });
 
-			//trace mode change--
-			//this needs to be in the avatar
-
-			//world is the master
-
-			//need to be able to turn this off
-			//need a flag
-			
-			avatar.x = x;
-			avatar.y = y;
-
-
-			avatar.run; 
-
-			//var newPoint = v.lerp( body.p, v, 0.25);
-			//body.v = v.mult(v.sub(newPoint, avatar.core.body.p ), 60);
-			}
-
-			
-  			//avatar.core.body.p = newPoint;
-
-  			//trace( avatar.core.body.v );
-
-			//var x = 
-			//var y =  
-		}
-		//run through the soul list
-		//match up the x to the body x
-
-		//NEW
-		//avatar.update();
-  		///stage.update();
-
-  		var ctx = world.ctx;
-  		var physics = world.physics;
-
-  		//ctx.clearRect(0, 0, world.width, world.height);
-  		//ctx.fillText("Version: " + tag, 0, 0, physicsWidth );
-
-  		// Draw shapes
-  		ctx.strokeStyle = 'black';
-  		ctx.clearRect(0, 0, world.width, world.height);
-
-  		ctx.font = "16px sans-serif";
-  		ctx.lineCap = 'round';
-
-  		world.space.eachShape(function(shape) {
-    		ctx.fillStyle = shape.style();
-    		shape.draw( world.ctx, world.scale, world.point2canvas);
-  			});
-
-  		world.update(1/60);
-	 },
+      world.update(1/60);
+   },
 
 	update:function( dt) {
  	 world.space.step(dt);
 	},
 
 	drawBorders: function (){
-  		trace("adding the borders ");
-
   		var height = world.height;
   		var width = world.width;
   		var v = world.v;
@@ -261,8 +245,6 @@ world = {
       
       floor2.setElasticity(1);
       floor2.setFriction(5);
-
-
 	}
 
 	

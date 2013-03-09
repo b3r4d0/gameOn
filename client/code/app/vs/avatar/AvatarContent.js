@@ -29,6 +29,9 @@ var AvatarContent = function ( $core, $control ) {
 			frames.push( index );
 		}
 
+		self.core.width = soul.width;
+		self.core.height = soul.height;
+
 		builder.addAnimation("circle", frames, true, 8);
 		var spriteSheet = builder.build();
 

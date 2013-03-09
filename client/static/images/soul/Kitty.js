@@ -3,8 +3,8 @@ soul = {
 	type:"Kitty",
 
 	toonFrames:"kitty",
-	height:31,
-	width:28,
+	height:40,
+	width:31,
 
 	radius:20,
 	mass:3,
