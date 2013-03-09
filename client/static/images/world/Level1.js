@@ -15,66 +15,71 @@ world = {
   }
     ///JUNK
 		
-		world.physics  = document.getElementById('physics');
-		world.height  	= self.core.height;
-		world.width 	= self.core.width;
-
-		world.ctx 		= world.physics.getContext('2d');
-		
-		var v = world.v = cp.v;
-
-		var space = world.space = new cp.Space();
-  		space.iterations = 60;
-  		space.gravity = v(0, 1);
-  		space.sleepTimeThreshold = 0.5;
-  		space.collisionSlop = 0.5;
-  		space.sleepTimeThreshold = 0.5;
-
-  		self.mouse = v(0,0); 
-  		self.mouseBody = new cp.Body(Infinity, Infinity);
-
-  		//physics.onresize();
-  		//trace("awaking the world");
-
-  		cp.Shape.prototype.style = function() {
-  		var body;
-  		if (this.sensor) {
-    	return "rgba(255,255,255,0)";
-  		} else {
-    	body = this.body;
-    	if (body.isSleeping()) {
-     	 return "rgb(50,50,50)";
-    	} else if (body.nodeIdleTime > this.space.sleepTimeThreshold) {
-      	return "rgb(170,170,170)";
-    	} else {
-      	return "rgb(0,255,0)";
-    	};
-    	}
-		};
-
-
-		//http://www.youtube.com/watch?v=EnCL2sYO41Q
-
-
-		cp.SegmentShape.prototype.draw = function(ctx, scale, point2canvas) {
-  		var oldLineWidth = ctx.lineWidth;
-  		ctx.lineWidth = Math.max(1, this.r * scale * 2);
-  		world.drawLine(ctx, point2canvas, this.ta, this.tb);
-  		ctx.lineWidth = oldLineWidth;
-		};
-
-		cp.CircleShape.prototype.draw = function(ctx, scale, point2canvas) {
-  		world.drawCircle(ctx, scale, point2canvas, this.tc, this.r);
-
-  		// And draw a little radian so you can see the circle roll.
-  		world.drawLine(ctx, point2canvas, this.tc, cp.v.mult(this.body.rot, this.r).add(this.tc));
-		};
-
+      world.initPhysics();
   		world.drawBorders();
+
     	//circle.setLayers( NOT_GRABABLE_MASK );
 
     	self.core.cosmos.avatar = {type:'Balloon', x:0, y:0 };
 	},
+
+  initPhysics:function(){
+
+    world.physics  = document.getElementById('physics');
+    world.height    = self.core.height;
+    world.width   = self.core.width;
+
+    world.ctx     = world.physics.getContext('2d');
+    
+    var v = world.v = cp.v;
+
+    var space = world.space = new cp.Space();
+      space.iterations = 60;
+      space.gravity = v(0, 1);
+      space.sleepTimeThreshold = 0.5;
+      space.collisionSlop = 0.5;
+      space.sleepTimeThreshold = 0.5;
+
+      self.mouse = v(0,0); 
+      self.mouseBody = new cp.Body(Infinity, Infinity);
+
+      //physics.onresize();
+      //trace("awaking the world");
+
+      cp.Shape.prototype.style = function() {
+      var body;
+      if (this.sensor) {
+      return "rgba(255,255,255,0)";
+      } else {
+      body = this.body;
+      if (body.isSleeping()) {
+       return "rgb(50,50,50)";
+      } else if (body.nodeIdleTime > this.space.sleepTimeThreshold) {
+        return "rgb(170,170,170)";
+      } else {
+        return "rgb(0,255,0)";
+      };
+      }
+    };
+
+
+    //http://www.youtube.com/watch?v=EnCL2sYO41Q
+
+
+    cp.SegmentShape.prototype.draw = function(ctx, scale, point2canvas) {
+      var oldLineWidth = ctx.lineWidth;
+      ctx.lineWidth = Math.max(1, this.r * scale * 2);
+      world.drawLine(ctx, point2canvas, this.ta, this.tb);
+      ctx.lineWidth = oldLineWidth;
+    };
+
+    cp.CircleShape.prototype.draw = function(ctx, scale, point2canvas) {
+      world.drawCircle(ctx, scale, point2canvas, this.tc, this.r);
+
+      // And draw a little radian so you can see the circle roll.
+      world.drawLine(ctx, point2canvas, this.tc, cp.v.mult(this.body.rot, this.r).add(this.tc));
+    };
+  },
 
 	createSoul:function( avatar, soul ){
 		trace('this is what i am looking for' + avatar );
