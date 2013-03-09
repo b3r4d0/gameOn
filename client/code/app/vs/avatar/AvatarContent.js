@@ -40,14 +40,18 @@ var AvatarContent = function ( $core, $control ) {
 		display.x = self.core.x;
 		display.y = self.core.y;
 
+		//next commit working dragging		
+
 		self.display = display;
-		
+
 		return self.core.avatar;
 	};
+
 
 	self.run = function(){
 		self.display.x = self.core.x;
 		self.display.y = self.core.y;
+		self.display.update = false;
 	}
 
 	return self; 

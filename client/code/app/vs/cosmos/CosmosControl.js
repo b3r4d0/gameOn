@@ -149,6 +149,10 @@ var CosmosControl = function ( $core ) {
   		self.core.stageWidth	= canvas.width;
   		self.core.stageHeight   = canvas.height;
 
+  		createjs.Touch.enable( self.core.stage ); ///GLOBAL FUNCTION BAD BAD BAD
+  		self.core.stage.enableMouseOver(10);
+		self.core.stage.mouseMoveOutside = true; // k
+
 		return self.core.cosmos;
 	};
 

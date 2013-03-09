@@ -9,6 +9,8 @@ var AvatarCore = function ( $name, $type, $cosmos ) {
 	name:{ 			value:$name 	},
 	type:{ 			value:$type 	},
 	id:{ 			value:"no id present", 		writable:true},
+
+	selected:{ 		value:false 	},
 	
 	//texture loading
 	skin:{ 			value:"folder", 			writable:true},

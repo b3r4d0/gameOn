@@ -7,6 +7,13 @@ world = {
 	styles:[], 				  
 
 	start:function( ){
+
+    document.onkeypress=function(e){
+    var e=window.event || e
+    //alert("CharCode value: "+e.charCode)
+    //alert("Character: "+String.fromCharCode(e.charCode))
+  }
+    ///JUNK
 		
 		world.physics  = document.getElementById('physics');
 		world.height  	= self.core.height;
@@ -66,7 +73,7 @@ world = {
   		world.drawBorders();
     	//circle.setLayers( NOT_GRABABLE_MASK );
 
-    	self.core.cosmos.avatar = {type:'Sun', x:0, y:0 };
+    	self.core.cosmos.avatar = {type:'Balloon', x:0, y:0 };
 	},
 
 	createSoul:function( avatar, soul ){
@@ -135,16 +142,26 @@ world = {
 				var v = world.v;
 
 			var newPoint = world.point2canvas( body.p );
-			
-
 			var x = newPoint.x;
 			var y = newPoint.y;
 
+
+			//var x = body.p.x;
+			//var y = body.p.y;
+
+			//trace mode change--
+			//this needs to be in the avatar
+
+			//world is the master
+
+			//need to be able to turn this off
+			//need a flag
+			
 			avatar.x = x;
 			avatar.y = y;
-			avatar.run; 
 
-			trace( "you got a x " + x + "you got a y " + y  );
+
+			avatar.run; 
 
 			//var newPoint = v.lerp( body.p, v, 0.25);
 			//body.v = v.mult(v.sub(newPoint, avatar.core.body.p ), 60);
