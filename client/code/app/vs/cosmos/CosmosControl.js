@@ -78,10 +78,11 @@ var CosmosControl = function ( $core ) {
 	}
 
 	self.toonFramesFromBeyond = function ( frameData, type ){
+		trace("looking for frames from beyond " + type );
 		var soul = self.core.souls[ type ];
 		if ( soul == null ) throw new Error( "You got no SOUL");
 		soul.toonFrames = frameData;		
-		self.checkWaitingRoom( soul.type );
+		self.checkWaitingRoom( type  );
 	}
 
 	self.soulFromBeyond = function ( soulData ){
@@ -104,8 +105,12 @@ var CosmosControl = function ( $core ) {
 
 	self.checkWaitingRoom = function ( type ){
 
+		trace("checking the waiting room " + type );
+
 		var soul = self.core.souls[ type ];
 		var max = self.core.waitingRoomList.length;
+
+		trace("what does the max look like " + max );
 
 		var remove = [];
 		var i;
@@ -114,7 +119,7 @@ var CosmosControl = function ( $core ) {
 		{
 			var avatar = self.core.waitingRoomList[ i ];
 			
-			trace("whats in the list " + avatar.type );
+			trace("whats in the list " + avatar.type + " what type are we looking for " + type );
 
 			if ( avatar.type == type ) {
 				
@@ -124,11 +129,20 @@ var CosmosControl = function ( $core ) {
 			}
 		}
 
-		max = remove.length;
+		var b;
+		var removeMax = remove.length;
+		trace("before " + removeMax );
 
-		for ( i = 0; i < max; i++ ){ self.core.waitingRoomList.splice( remove[ i ] ); }
+		for ( i = 0; i < removeMax; i++ ){ 
+			
+			var index = remove[i];
+			self.core.waitingRoomList.splice( index, 1 ); 
+		
+		}
 
-		var max = self.core.waitingRoomList.length;
+		max = self.core.waitingRoomList.length;
+
+		trace("after " + max );
 	}
 
 	self.stop = function(){

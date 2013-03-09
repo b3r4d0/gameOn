@@ -64,8 +64,8 @@ world = {
     circle.setElasticity(0.8);
     circle.setFriction(1);
 
-    if ( avatar.type == "Balloon" )   world.balloon = avatar.core.body;
-    if ( avatar.type == "Kitty" )     world.kitty = avatar.core.body;
+    //if ( avatar.type == "Balloon" )   world.balloon = avatar.core.body;
+    //if ( avatar.type == "Kitty" )     world.kitty = avatar.core.body;
 
     
 

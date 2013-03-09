@@ -32,7 +32,7 @@ var AvatarContent = function ( $core, $control ) {
 		self.core.width = soul.width;
 		self.core.height = soul.height;
 
-		builder.addAnimation("circle", frames, true, 8);
+		builder.addAnimation("circle", frames, true, 1);
 		var spriteSheet = builder.build();
 
 		// create our bitmap animations using the generated sprite sheet, and put them on stage:
