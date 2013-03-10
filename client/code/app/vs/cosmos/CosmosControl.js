@@ -78,7 +78,7 @@ var CosmosControl = function ( $core ) {
 	}
 
 	self.toonFramesFromBeyond = function ( frameData, type ){
-		trace("looking for frames from beyond " + type );
+		//ace("looking for frames from beyond " + type );
 		var soul = self.core.souls[ type ];
 		if ( soul == null ) throw new Error( "You got no SOUL");
 		soul.toonFrames = frameData;		
@@ -105,12 +105,12 @@ var CosmosControl = function ( $core ) {
 
 	self.checkWaitingRoom = function ( type ){
 
-		trace("checking the waiting room " + type );
+		//trace("checking the waiting room " + type );
 
 		var soul = self.core.souls[ type ];
 		var max = self.core.waitingRoomList.length;
 
-		trace("what does the max look like " + max );
+		//trace("what does the max look like " + max );
 
 		var remove = [];
 		var i;
@@ -119,11 +119,11 @@ var CosmosControl = function ( $core ) {
 		{
 			var avatar = self.core.waitingRoomList[ i ];
 			
-			trace("whats in the list " + avatar.type + " what type are we looking for " + type );
+			//trace("whats in the list " + avatar.type + " what type are we looking for " + type );
 
 			if ( avatar.type == type ) {
 				
-				trace("kick you out of the waiting room " + avatar.type );
+				//trace("kick you out of the waiting room " + avatar.type );
 				self.createSoul( avatar, soul );
 				remove.push( i );
 			}
@@ -131,7 +131,7 @@ var CosmosControl = function ( $core ) {
 
 		var b;
 		var removeMax = remove.length;
-		trace("before " + removeMax );
+		//trace("before " + removeMax );
 
 		for ( i = 0; i < removeMax; i++ ){ 
 			
@@ -142,7 +142,7 @@ var CosmosControl = function ( $core ) {
 
 		max = self.core.waitingRoomList.length;
 
-		trace("after " + max );
+		//trace("after " + max );
 	}
 
 	self.stop = function(){
@@ -237,11 +237,11 @@ var CosmosControl = function ( $core ) {
 
 		//Delete me
 	self.loadSkin = function( skin ){
-		trace("load the skin " + skin );
+		//trace("load the skin " + skin );
 		if ( self.core.create == null ) throw new Error( self.core.createError );
 		
 		var queue = new self.core.create.LoadQueue();
-		trace("Que " + queue );
+		//trace("Que " + queue );
 	}
 
 	self.worldFromBeyond = function( worldData ){

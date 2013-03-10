@@ -6,7 +6,9 @@ world = {
 	scale:1,
 	styles:[], 
   balloon:null,
-  kitty:null,				  
+  kitty:null,
+  gravityV:-100,
+  gravityH:0,				  
 
 	start:function( ){
 
@@ -27,6 +29,15 @@ world = {
 
     var i = 0;
     var max = self.core.avatarList.length;
+
+  if ( world.balloon != null ) 
+  {
+    var force = world.gravityV * -1;
+    world.balloon.applyImpulse( world.v ( 0, force), world.v(0,0 ));
+  }
+
+    
+     
 
     for ( i; i < max; i++ )
     {
@@ -64,8 +75,12 @@ world = {
     circle.setElasticity(0.8);
     circle.setFriction(1);
 
-    //if ( avatar.type == "Balloon" )   world.balloon = avatar.core.body;
-    //if ( avatar.type == "Kitty" )     world.kitty = avatar.core.body;
+    if ( avatar.type == "Balloon" )   world.balloon = avatar.core.body;
+    if ( avatar.type == "Kitty" )     world.kitty = avatar.core.body;
+
+    if ( world.balloon == null ) return
+      if ( world.kitty == null ) return
+
 
     
 
@@ -73,13 +88,13 @@ world = {
     // Can be used for a cheap approximation of a rope.
     var posA = world.v( 50, 60);
     var posB = world.v( 110, 60);
-    //var boxOffset;
-   //boxOffset = v(160, 0);
+    var boxOffset;
+    boxOffset = world.v(160, 0);
     //label('Slide Joint');
     //body1 = addBall(posA);
     //body2 = addBall(posB);
     //body2.setAngle(Math.PI);
-    //world.space.addConstraint(new cp.SlideJoint(body1, body2, v(15,0), v(15,0), 20, 40));
+    world.space.addConstraint(new cp.SlideJoint( world.balloon, world.kitty, world.v(15,0), world.v(15,0), 20, 40));
 
   },
 
@@ -121,7 +136,7 @@ world = {
 
     var space = world.space = new cp.Space();
       space.iterations = 60;
-      space.gravity = v(0, 1);
+      space.gravity = v( world.gravityH, world.gravityV);
       space.sleepTimeThreshold = 0.5;
       space.collisionSlop = 0.5;
       space.sleepTimeThreshold = 0.5;

@@ -29,6 +29,8 @@ var AvatarContent = function ( $core, $control ) {
 			frames.push( index );
 		}
 
+		trace("how many frames you got " + frames.length );
+
 		self.core.width = soul.width;
 		self.core.height = soul.height;
 
