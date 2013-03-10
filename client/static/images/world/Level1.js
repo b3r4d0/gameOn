@@ -23,9 +23,10 @@ world = {
       document.onkeypress = world.keyPress;
       //avatars
     	
-
       self.core.cosmos.avatar = {type:'Balloon',  x:100, y:100 };
       self.core.cosmos.avatar = {type:'Kitty',    x:100, y:100 };
+
+      self.core.cosmos.avatar = {type:'Bitus',    x:400, y:100 };
 	},
 
   run: function ( ){
@@ -38,15 +39,15 @@ world = {
     var i = 0;
     var max = self.core.avatarList.length;
 
-    if (  world.kitty != null  &&  world.kitty.y < 0  ) 
-    {
-        var force =   0;
+    //if (  world.kitty != null  &&  world.kitty.y < 0  ) 
+    //{
+     //   var force =   0;
 
 
- trace("u slipiing!!! " + force);
-                   self.core.stage.y = world.kitty.y *-1;
+ //trace("u slipiing!!! " + force);
+  //                 self.core.stage.y = world.kitty.y *-1;
 
-    }
+   // }
 
 
   if ( world.balloonBody != null ) 
@@ -101,7 +102,6 @@ world = {
     {
        world.kittyBody = avatar.core.body;
        world.kitty = avatar;
-       
     }
         
 

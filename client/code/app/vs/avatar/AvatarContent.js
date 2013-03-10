@@ -34,6 +34,25 @@ var AvatarContent = function ( $core, $control ) {
 
 	};
 
+	self.onPress = function(evt) {
+					
+					if ( self.core.soul.onPress != null ) self.core.soul.onPress( evt );
+					trace( "sayt my name " + self.core.type );
+					//trace( self.core.soul.action() )
+					// bump the target in front of it's siblings:
+					//container.addChild(target);
+					//var offset = {x:target.x-evt.stageX, y:target.y-evt.stageY};
+
+					// add a handler to the event object's onMouseMove callback
+					// this will be active until the user releases the mouse button:
+					//evt.onMouseMove = function(ev) {
+					//	target.x = ev.stageX+offset.x;
+					//	target.y = ev.stageY+offset.y;
+						// indicate that the stage should be updated on the next tick:
+						//update = true;
+					//}
+				}
+
 	self.createToon = function( id, list, builder ){
 
 		var i = 0;
@@ -44,7 +63,7 @@ var AvatarContent = function ( $core, $control ) {
 		for ( i = 0; i < max; i++ )
 		{
 			var src = list[ i ];
-			trace(" do you have a source " + src );
+			//trace(" do you have a source " + src );
 			var bitmap = new createjs.Bitmap( src );
 			var index = builder.addFrame( bitmap, new createjs.Rectangle(-0,-0, self.core.width, self.core.height ));
 			frames.push( index );
@@ -63,6 +82,7 @@ var AvatarContent = function ( $core, $control ) {
 		
 		if ( self.core.soul == null ) throw new Error( "You got no SOUL");
 		var soul = self.core.soul;
+		if ( soul.awake != null ) soul.awake( self.core.avatar);
 		self.core.width = soul.width;
 		self.core.height = soul.height;
 
@@ -94,6 +114,7 @@ var AvatarContent = function ( $core, $control ) {
 		//next commit working dragging		
 
 		self.display = display;
+		self.display.onPress = self.onPress;
 
 		return self.core.avatar;
 	};
@@ -103,6 +124,8 @@ var AvatarContent = function ( $core, $control ) {
 		self.display.x = self.core.x;
 		self.display.y = self.core.y;
 		self.display.update = false;
+
+		if ( self.core.soul.run != null ) self.core.soul.run();
 	}
 
 	return self; 
