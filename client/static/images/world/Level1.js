@@ -18,11 +18,12 @@ world = {
 	start:function( ){
 
       world.initPhysics();
-  		world.drawBorders();
+  		//world.drawBorders();
       
       document.onkeypress = world.keyPress;
       //avatars
     	
+
       self.core.cosmos.avatar = {type:'Balloon',  x:100, y:100 };
       self.core.cosmos.avatar = {type:'Kitty',    x:100, y:100 };
 	},
@@ -32,8 +33,21 @@ world = {
     self.calcFPS();
     self.core.stage.update(); //shouldnt be here
 
+   
+
     var i = 0;
     var max = self.core.avatarList.length;
+
+    if (  world.kitty != null  &&  world.kitty.y < 0  ) 
+    {
+        var force =   0;
+
+
+ trace("u slipiing!!! " + force);
+                   self.core.stage.y = world.kitty.y *-1;
+
+    }
+
 
   if ( world.balloonBody != null ) 
   {
@@ -87,6 +101,7 @@ world = {
     {
        world.kittyBody = avatar.core.body;
        world.kitty = avatar;
+       
     }
         
 
@@ -123,19 +138,19 @@ world = {
       break;
 
       case 38:
-      body.applyImpulse( world.v ( 0, 10), world.v(0,0 ));
+      body.applyImpulse( world.v ( 0, 100), world.v(0,0 ));
       break;
 
       case 40:
-      body.applyImpulse( world.v ( 0, -10), world.v(0,0 ));
+      body.applyImpulse( world.v ( 0, -100), world.v(0,0 ));
       break;
 
       case 37:
-      body.applyImpulse( world.v ( -10, 0), world.v(0,0 ));
+      body.applyImpulse( world.v ( -100, 0), world.v(0,0 ));
       break;
 
       case 39:
-      body.applyImpulse( world.v ( 0, 10), world.v(0,0 ));
+      body.applyImpulse( world.v ( 0, 100), world.v(0,0 ));
       break;
     };
 

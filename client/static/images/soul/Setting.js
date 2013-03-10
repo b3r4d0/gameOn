@@ -1,8 +1,8 @@
 soul = {
 
-	type:"Sun",
+	type:"Setting",
 
-	toonFrames:"background",
+	toonFrames:"setting",
 	height:200,
 	width:500,
 

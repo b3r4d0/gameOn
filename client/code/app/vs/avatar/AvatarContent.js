@@ -44,7 +44,7 @@ var AvatarContent = function ( $core, $control ) {
 		for ( i = 0; i < max; i++ )
 		{
 			var src = list[ i ];
-			if ( src  == null ) throw new Error("empty source ");
+			trace(" do you have a source " + src );
 			var bitmap = new createjs.Bitmap( src );
 			var index = builder.addFrame( bitmap, new createjs.Rectangle(-0,-0, self.core.width, self.core.height ));
 			frames.push( index );
@@ -75,6 +75,7 @@ var AvatarContent = function ( $core, $control ) {
 			var id = p;
 			var list = soul.toons[ p ];
 			list = self.createFrames( list );
+			soul.toons[ p ] = list;
 			self.createToon( id, list, builder);
 		} 
 

@@ -2,14 +2,14 @@ soul = {
 
 	type:"Balloon",
 
-	toonFrames:"balloons",
+	toonFrames:"setting",
 
 	toons:{ 
-		idle:[1]
+		idle:[1,2,3]
 	},
 
-	height:31,
-	width:28,
+	height:300,
+	width:700,
 
 
 
