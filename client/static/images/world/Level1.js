@@ -5,11 +5,16 @@ world = {
 	v:null,
 	scale:1,
 	styles:[], 
-  balloon:null,
-  kitty:null,
+  
   gravityV:-100,
-  gravityH:0,				  
+  gravityH:0,
 
+  balloonBody:null,
+  kittyBody:null,
+
+  kitty:null,
+  balloon:null,
+  				  
 	start:function( ){
 
       world.initPhysics();
@@ -18,7 +23,7 @@ world = {
       document.onkeypress = world.keyPress;
       //avatars
     	
-      self.core.cosmos.avatar = {type:'Balloon',  x:0, y:0 };
+      self.core.cosmos.avatar = {type:'Balloon',  x:100, y:100 };
       self.core.cosmos.avatar = {type:'Kitty',    x:100, y:100 };
 	},
 
@@ -30,14 +35,11 @@ world = {
     var i = 0;
     var max = self.core.avatarList.length;
 
-  if ( world.balloon != null ) 
+  if ( world.balloonBody != null ) 
   {
     var force = world.gravityV * -1;
-    world.balloon.applyImpulse( world.v ( 0, force), world.v(0,0 ));
+    world.balloonBody.applyImpulse( world.v ( 0, force), world.v(0,0 ));
   }
-
-    
-     
 
     for ( i; i < max; i++ )
     {
@@ -69,20 +71,27 @@ world = {
     var mass = soul.mass;
 
     avatar.core.body = world.space.addBody(new cp.Body(mass, cp.momentForCircle(mass, 0, radius, world.v(0, 0))));
-    avatar.core.body.setPos( world.v( 40,  40 ) );
+    avatar.core.body.setPos( world.canvas2point(  avatar.x, avatar.y ) );
     
     var circle = world.space.addShape(new cp.CircleShape( avatar.core.body, radius, world.v(0, 0)));
     circle.setElasticity(0.8);
     circle.setFriction(1);
 
-    if ( avatar.type == "Balloon" )   world.balloon = avatar.core.body;
-    if ( avatar.type == "Kitty" )     world.kitty = avatar.core.body;
+    if ( avatar.type == "Balloon" ) 
+    {
+      world.balloonBody = avatar.core.body;
+      world.balloon = avatar;
+    }  
+      
+    if ( avatar.type == "Kitty" )
+    {
+       world.kittyBody = avatar.core.body;
+       world.kitty = avatar;
+    }
+        
 
-    if ( world.balloon == null ) return
-      if ( world.kitty == null ) return
-
-
-    
+    if ( world.balloonBody == null ) return
+      if ( world.kittyBody == null ) return
 
     // Slide Joints - Like pin joints but with a min/max distance.
     // Can be used for a cheap approximation of a rope.
@@ -94,17 +103,25 @@ world = {
     //body1 = addBall(posA);
     //body2 = addBall(posB);
     //body2.setAngle(Math.PI);
-    world.space.addConstraint(new cp.SlideJoint( world.balloon, world.kitty, world.v(15,0), world.v(15,0), 20, 40));
+    world.space.addConstraint(new cp.SlideJoint( world.balloonBody, world.kittyBody, world.v(15,0), world.v(15,0), 20, 40));
 
   },
 
   keyPress:function( e ){
     var e=window.event || e;
 
-    var body = world.balloon;
+    trace( "compose " + e.keyCode );
+
+    var body = world.balloonBody;
     if ( body == null ) return;
 
+
     switch ( e.keyCode ) {
+      case 0:
+      world.kitty.toon = "attack";
+      self.core.cosmos.avatar = {type:'Claw',  x:world.kitty.x + 120, y:world.kitty.y + 40 }; 
+      break;
+
       case 38:
       body.applyImpulse( world.v ( 0, 10), world.v(0,0 ));
       break;
@@ -253,7 +270,6 @@ world = {
   		
       floor.setElasticity(1);
   		floor.setFriction(5);
-
 
       var floor2 = world.space.addShape(new cp.SegmentShape( world.space.staticBody, v( 0, 0 ), v(width, 0 ), 0));
       

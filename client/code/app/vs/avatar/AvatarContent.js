@@ -9,37 +9,82 @@ var AvatarContent = function ( $core, $control ) {
 	display:{	value:null , writable:true	}
 	});
 
-	self.awake = function (){
-		
-		if ( self.core.soul == null ) throw new Error( "You got no SOUL");
-
+	self.createFrames = function( list ){
 		var soul = self.core.soul;
 
-		var max = soul.toonFrames.length;
-		//lets create some images
+		var max = list.length;
 		var frames = [];
 		var i = 0;
 
-		var builder = new createjs.SpriteSheetBuilder();
 		for ( i = 0; i < max; i++ )
 		{
-			var src = soul.toonFrames[ i ];
+			var src = list[ i ];
+			src = soul.toonFrames[ src];
+			frames.push( src );
+		};
+
+		return frames;
+	};
+
+	self.createSpriteSheet = function( list ){
+		
+		//var spriteSheet;
+		//
+		return spriteSheet;
+
+	};
+
+	self.createToon = function( id, list, builder ){
+
+		var i = 0;
+		var bitmap;
+		var max = list.length;
+		var frames = [];
+
+		for ( i = 0; i < max; i++ )
+		{
+			var src = list[ i ];
+			if ( src  == null ) throw new Error("empty source ");
 			var bitmap = new createjs.Bitmap( src );
-			var index = builder.addFrame( bitmap, new createjs.Rectangle(-0,-0, soul.width, soul.height ));
+			var index = builder.addFrame( bitmap, new createjs.Rectangle(-0,-0, self.core.width, self.core.height ));
 			frames.push( index );
+
+
 		}
 
-		trace("how many frames you got " + frames.length );
+		builder.addAnimation( id, frames, true, 2);
+	}
 
+	self.play = function( id ){
+			self.display.gotoAndPlay( id );
+	}
+
+	self.awake = function (){
+		
+		if ( self.core.soul == null ) throw new Error( "You got no SOUL");
+		var soul = self.core.soul;
 		self.core.width = soul.width;
 		self.core.height = soul.height;
 
-		builder.addAnimation("circle", frames, true, 1);
+		var max = soul.toonFrames.length;
+
+		var builder = new createjs.SpriteSheetBuilder();
+
+		for( var p in soul.toons)
+		{
+			var id = p;
+			var list = soul.toons[ p ];
+			list = self.createFrames( list );
+			self.createToon( id, list, builder);
+		} 
+
 		var spriteSheet = builder.build();
+
+		if ( self.core.type == "Kitty" ) spriteSheet.getAnimation("attack").next = "idle";
 
 		// create our bitmap animations using the generated sprite sheet, and put them on stage:
 		var display = new createjs.BitmapAnimation(spriteSheet);
-		display.gotoAndPlay("circle");
+		display.gotoAndPlay("idle");
 		self.core.cosmos.stage.addChild( display );
 
 		display.x = self.core.x;
