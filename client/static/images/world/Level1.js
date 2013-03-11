@@ -6,27 +6,37 @@ world = {
 	scale:1,
 	styles:[], 
   
-  gravityV:-100,
+  gravityV:-42,
   gravityH:0,
 
   balloonBody:null,
   kittyBody:null,
+  kittySoul:null,
 
   kitty:null,
   balloon:null,
+
+  bitus:null,
+  bitusBody:null,
+
+  worldSoul:null,
+
+  string:null,
   				  
 	start:function( ){
 
       world.initPhysics();
-  		//world.drawBorders();
+  		world.drawBorders();
       
       document.onkeypress = world.keyPress;
       //avatars
     	
+      self.core.cosmos.avatar = {type:'Background',  x:0, y:0 };
       self.core.cosmos.avatar = {type:'Balloon',  x:100, y:100 };
       self.core.cosmos.avatar = {type:'Kitty',    x:100, y:100 };
+      self.core.cosmos.avatar = {type:'Bitus',    x:500, y:100 };
 
-      self.core.cosmos.avatar = {type:'Bitus',    x:400, y:100 };
+      //self.core.cosmos.avatar = {type:'Bitus',    x:400, y:100 };
 	},
 
   run: function ( ){
@@ -34,33 +44,22 @@ world = {
     self.calcFPS();
     self.core.stage.update(); //shouldnt be here
 
-   
-
     var i = 0;
     var max = self.core.avatarList.length;
-
-    //if (  world.kitty != null  &&  world.kitty.y < 0  ) 
-    //{
-     //   var force =   0;
-
-
- //trace("u slipiing!!! " + force);
-  //                 self.core.stage.y = world.kitty.y *-1;
-
-   // }
-
-
-  if ( world.balloonBody != null ) 
-  {
-    var force = world.gravityV * -1;
-    world.balloonBody.applyImpulse( world.v ( 0, force), world.v(0,0 ));
-  }
+ 
+  
 
     for ( i; i < max; i++ )
     {
       var avatar = self.core.avatarList[ i ];
-      
+
       var body = avatar.core.body ;
+
+      if ( body == null )
+      {
+        avatar.run;
+      }
+
 
       if ( body != null) 
       {
@@ -71,10 +70,30 @@ world = {
            var y = newPoint.y;
            avatar.x = x - avatar.width * .5;
            avatar.y = y - avatar.height * .5;
-           avatar.run; 
+
+           if ( avatar.type == "balloon")
+           {
+              avatar.x = world.kitty.x ;
+              avatar.y = world.kitty.y ;            
+           }
+           avatar.run;       
       }
 
     }
+
+    if ( world.kitty == null ) return;
+
+    if ( world.kitty.y > 200 ) 
+    {
+      world.kittyBody.setPos( world.canvas2point(  100, -100 ) );
+    }
+
+  if ( world.bitus.y > 200 ) { world.bitusBody.applyImpulse( world.v ( 0, 100), world.v(0,0 ));  }; 
+
+  if ( world.bitus.x > 200 ) { 
+    //trace("come out !!! bitus ");
+    //world.bitusBody.applyImpulse( world.v ( -100, 0), world.v(0,0 ));  
+  };  
 
     world.draw();
 
@@ -82,6 +101,18 @@ world = {
 
    createSoul:function( avatar, soul ){
     
+    if ( soul.mass ==  null ) return;
+
+    soul.avatar = avatar;
+
+
+    if ( avatar.type == "Background" );
+    {
+      world.worldSoul = soul;
+      soul.action = function() { trace("action jackson " )};
+    }    
+     
+
     var radius = soul.radius;
     var mass = soul.mass;
 
@@ -102,7 +133,28 @@ world = {
     {
        world.kittyBody = avatar.core.body;
        world.kitty = avatar;
+       world.kittySoul = soul;
+
+       if ( world.worldSoul != null) world.worldSoul.kittySoul = world.kittySoul;
+
     }
+
+    if ( avatar.type == "Bitus" ) 
+    {
+      world.bitusBody = avatar.core.body;
+      world.bitus = avatar;
+
+      soul.kitty = world.kitty;
+    }
+
+
+
+    ///LAST STAND BEGINS HERE
+    
+    soul.avatar = avatar;
+
+
+    ///
         
 
     if ( world.balloonBody == null ) return
@@ -113,12 +165,13 @@ world = {
     var posA = world.v( 50, 60);
     var posB = world.v( 110, 60);
     var boxOffset;
-    boxOffset = world.v(160, 0);
+    boxOffset = world.v(16, 0);
     //label('Slide Joint');
     //body1 = addBall(posA);
     //body2 = addBall(posB);
     //body2.setAngle(Math.PI);
-    world.space.addConstraint(new cp.SlideJoint( world.balloonBody, world.kittyBody, world.v(15,0), world.v(15,0), 20, 40));
+    world.space.addConstraint(new cp.DampedSpring( world.balloonBody, world.kittyBody, cp.v( 0,0), cp.v( 0,0), 0, 5, 0.3));
+    
 
   },
 
@@ -156,6 +209,23 @@ world = {
 
   },
 
+  collisionBegin:function(arbiter, space) {
+    trace("COLLLLLLISSSSION COME TRUE!!!!" );
+    //var shapes = arbiter.getShapes();
+    //var collTypeA = shapes[0].collision_type;
+    //var collTypeB = shapes[1].collision_type;
+
+    //var shapeA = shapes[0];
+    //var shapeB = shapes[1];
+
+    //trace("Show me the $$$ " + shapes[0].body.avatar.collide(shapes[1].body.avatar) );
+
+    //cc.log('Collision Type A:' + collTypeA);
+    //cc.log('Collision Type B:' + collTypeB);
+    return true;
+},
+
+
   initPhysics:function(){
 
     world.physics  = document.getElementById('physics');
@@ -176,6 +246,8 @@ world = {
       self.mouse = v(0,0); 
       self.mouseBody = new cp.Body(Infinity, Infinity);
 
+      space.addCollisionHandler(1, 1, world.collisionBegin.bind( world ) );
+
       //physics.onresize();
       //trace("awaking the world");
 
@@ -194,7 +266,6 @@ world = {
       };
       }
     };
-
 
     //http://www.youtube.com/watch?v=EnCL2sYO41Q
 
@@ -279,17 +350,15 @@ world = {
 
   		var wall2 = world.space.addShape(new cp.SegmentShape(world.space.staticBody, v(width, 0), v(width, height ), 0));
   		wall2.setElasticity(1);
-  		wall2.setFriction(1);
+  	 wall2.setFriction(1);
 
-  		var floor = world.space.addShape(new cp.SegmentShape( world.space.staticBody, v( 0, height ), v(width, height ), 0));
-  		
-      floor.setElasticity(1);
-  		floor.setFriction(5);
+  	var floor = world.space.addShape(new cp.SegmentShape( world.space.staticBody, v( 0, height ), v(width, height ), 0));
+  	floor.setElasticity(1);
+  	floor.setFriction(5);
 
-      var floor2 = world.space.addShape(new cp.SegmentShape( world.space.staticBody, v( 0, 0 ), v(width, 0 ), 0));
-      
-      floor2.setElasticity(1);
-      floor2.setFriction(5);
+    var floor2 = world.space.addShape(new cp.SegmentShape( world.space.staticBody, v( 0, 0 ), v(width, 0 ), 0));
+    floor2.setElasticity(1);
+    floor2.setFriction(5);
 	}
 
 	

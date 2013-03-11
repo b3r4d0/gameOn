@@ -210,11 +210,15 @@ var CosmosControl = function ( $core ) {
 			return avatar;
 		}
 
-		return self.createSoul( avatar, soul );
+		var one = self.createSoul( avatar, soul );
+		return one;
 	}
+
+	//oh my god the avatar doesnt have a sould
 
 	self.createSoul = function ( avatar, soul ){
 		avatar.soul =  Object.create( soul );
+		trace( "whats here " + avatar.soul );
 
 		return avatar;
 	}

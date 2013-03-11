@@ -36,8 +36,11 @@ var AvatarContent = function ( $core, $control ) {
 
 	self.onPress = function(evt) {
 					
-					if ( self.core.soul.onPress != null ) self.core.soul.onPress( evt );
-					trace( "sayt my name " + self.core.type );
+					if ( self.core.soul.onPress != null ) self.core.soul.onPress( self  );
+					//trace( "sayt my name " + self.core.type );
+
+					//self.display.gotoAndPlay("attack");
+
 					//trace( self.core.soul.action() )
 					// bump the target in front of it's siblings:
 					//container.addChild(target);
@@ -82,7 +85,7 @@ var AvatarContent = function ( $core, $control ) {
 		
 		if ( self.core.soul == null ) throw new Error( "You got no SOUL");
 		var soul = self.core.soul;
-		if ( soul.awake != null ) soul.awake( self.core.avatar);
+		
 		self.core.width = soul.width;
 		self.core.height = soul.height;
 
@@ -92,16 +95,23 @@ var AvatarContent = function ( $core, $control ) {
 
 		for( var p in soul.toons)
 		{
+		
 			var id = p;
+
+			trace("lets see the id  " + id );
 			var list = soul.toons[ p ];
 			list = self.createFrames( list );
-			soul.toons[ p ] = list;
+			//soul.toons[ p ] = list;
 			self.createToon( id, list, builder);
 		} 
 
 		var spriteSheet = builder.build();
 
-		if ( self.core.type == "Kitty" ) spriteSheet.getAnimation("attack").next = "idle";
+		if ( self.core.type == "Kitty" )
+		{
+			spriteSheet.getAnimation("attack").next = "idle";
+			window.kitty = self;
+		} 
 
 		// create our bitmap animations using the generated sprite sheet, and put them on stage:
 		var display = new createjs.BitmapAnimation(spriteSheet);
@@ -116,16 +126,22 @@ var AvatarContent = function ( $core, $control ) {
 		self.display = display;
 		self.display.onPress = self.onPress;
 
+		if ( soul.awake != null ) soul.awake( self );
+
 		return self.core.avatar;
 	};
 
+	self.action = function(){
+		//if ( self.core.soul != null ) self.core.soul( self );
+	}
 
 	self.run = function(){
+		
+		if ( self.display == null ) return;
 		self.display.x = self.core.x;
 		self.display.y = self.core.y;
 		self.display.update = false;
-
-		if ( self.core.soul.run != null ) self.core.soul.run();
+		if ( self.core.soul.run != null ) self.core.soul.run( self ) ;
 	}
 
 	return self; 
